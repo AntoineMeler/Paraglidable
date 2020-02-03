@@ -5,10 +5,14 @@ scripts_dir = os.path.dirname(os.path.realpath(__file__))
 
 root_dir = scripts_dir + "/.."
 dest_dir = root_dir + "/tiler/_cache/elevation"
+if os.path.isdir("/workspaces/Paraglidable"): # in docker
+	www_dir = root_dir + "/www/
+else: # on production server
+	www_dir = "/var/www/html/"
 
 os.makedirs(dest_dir, exist_ok=True)
-os.makedirs(root_dir+"/www/data", exist_ok=True)
-os.system("ln -s "+ dest_dir +" /var/www/html/data/elevation")
+os.makedirs(www_dir + "data", exist_ok=True)
+os.system("ln -s "+ dest_dir +" "+ www_dir +"data/elevation")
 
 files = [("1rnA5qbvY3FhPnkpTj4EgOssQd4TI6bMX", "5.zip"),
 		 ("1ErLEzdxCFnvy9_-28s7T4YSeXMfTSrpO", "6.zip"),
