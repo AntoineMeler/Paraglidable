@@ -1,0 +1,7 @@
+*.o
+*.elev
+www/data/
+tiler/_cache/
+.DS_Store
+__pycache__
+neural_network/bin/data
