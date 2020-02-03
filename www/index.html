@@ -1,0 +1,2759 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script async src="/apps/gtag.php"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-127025208-1');
+    </script>
+    <meta charset="utf-8">
+
+    <meta name="description" content="Paraglidable: AI-based flying conditions forecast for paragliding">
+    <meta name="keywords" content="paraglidable, paragliding, weather, forecast">
+    <title>Paraglidable</title>
+
+    <meta property="og:title" content="paraglidable.com" />
+    <meta property="og:image" content="https://paraglidable.com/imgs/oc_image2.jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://paraglidable.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="AI-based flying conditions forecast for paragliding" />
+
+    <meta http-equiv="refresh" content="43200">
+
+    <link rel="stylesheet" href="js/third_parties/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="css/paraglidable.css" />
+    <link rel="stylesheet" href="js/third_parties/prism/prism.css" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="imgs/favicon/favicon.ico">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="imgs/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="196x196" href="imgs/favicon/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="imgs/favicon/favicon-160.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="imgs/favicon/favicon-96.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="imgs/favicon/favicon-64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="imgs/favicon/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="imgs/favicon/favicon-16.png">
+    <link rel="apple-touch-icon" href="imgs/favicon/favicon-57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="imgs/favicon/favicon-114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="imgs/favicon/favicon-72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="imgs/favicon/favicon-144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="imgs/favicon/favicon-60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="imgs/favicon/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="imgs/favicon/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="imgs/favicon/favicon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="imgs/favicon/favicon-180.png">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="imgs/favicon/favicon-144.png">
+    <meta name="msapplication-config" content="imgs/favicon/browserconfig.xml">
+    <!-- <script src="https://browser.sentry-cdn.com/4.3.0/bundle.min.js" crossorigin="anonymous"></script> -->
+</head>
+<body>
+
+    <script src="js/third_parties/leaflet/leaflet.js"></script>
+    <script src="js/third_parties/jquery-3.3.1.min.js"></script>
+    <script src="js/third_parties/moment-with-locales.min.js"></script>
+    <script src="js/third_parties/tinycolor-min.js"></script>
+
+    <div id="topLeftShadowHider"></div>
+    <div id="header">
+        <div id="menuButtonsBar">
+
+<!-- menuButtonsBar -->
+
+<div class="dropdown">
+    <div class="menuButton" id="menuButtonInfo" title="About"></div>
+    <div id="dropdown-content-about" class="dropdown-content">
+        <ul>
+            <li id="aboutLink" onclick="switchVisibility('newPopupAbout')">What is it?</li>
+            <li id="githubLink" onclick="window.open('https://github.com/AntoineMeler/Paraglidable','_blank')">GitHub page</li>
+            <li id="contactLink" onclick="switchVisibility('newPopupContact')">Contact</li>
+            <li id="creditsLink" onclick="switchVisibility('newPopupCredits')">Credits</li>
+            <li id="linksLink" onclick="switchVisibility('newPopupLinks')">Links</li>
+        </ul>
+    </div>
+</div>
+
+<div class="dropdown">
+    <div class="menuButton" id="menuButtonSettings" title="Settings"></div>
+    <div class="dropdown-content">
+        <ul>
+            <li id="colorBlindLink" onclick="switchColorBlind()">Color blind mode: <span id="colorBlindModeStrValLink" style="font-weight:bold;"></span></li>
+        </ul>
+    </div>
+</div>
+
+<div class="dropdown">
+    <div class="menuButton" id="menuButtonMobile" title="Mobile"></div>
+    <div class="dropdown-content">
+        <ul>
+            <li id="mobileVersionLink" onclick="window.location.href='mobile.html'">Mobile version</li>
+            <li id="androidAppLink" onclick="window.open('https://play.google.com/store/app/details?id=com.paraglidable.paraglidable','_blank')">Android app</li>
+        </ul>
+    </div>
+</div>
+
+<div class="dropdown">
+    <div class="menuButton" id="menuButtonScience" title="Science behind"></div>
+    <div id="dropdown-content-about" class="dropdown-content">
+        <ul>
+            <li id="howDoesItWorkLink" onclick="switchVisibility('newPopupHowDoesItWork')">How does it work?</li>
+            <li id="neuralNetworkLink" onclick="window.open('https://github.com/AntoineMeler/Paraglidable/blob/master/neural_network/README.md','_blank')">The neural network</li>
+            <li id="analysisLink" onclick="switchMode('analysis');">Past data</li>
+        </ul>
+    </div>
+</div>
+
+<div class="dropdown">
+    <div class="menuButton" id="menuButtonAPI" title="REST API"></div>
+    <div class="dropdown-content">
+        <ul>
+            <li id="apiWhatIsItLink" onclick="switchVisibility('newPopupAboutApi')">What is the API?</li>
+            <li id="apiKeyLink" onclick="switchMode('api');">Get an API key</li>
+        </ul>
+    </div>
+</div>
+
+<div class="dropdown" style="display:none">
+    <div class="menuButton" id="menuButtonShare" title="Share current view"></div>
+    <div class="dropdown-content">
+        <ul>
+            <li id="shareLink" onclick="switchVisibility('newPopupShareLink')">Share link</li>
+            <li id="shareFacebookLink" onclick="">Share on Facebook</li>
+        </ul>
+    </div>
+</div>
+
+<div>
+    <div class="menuButtonExpandable">
+      <input autocomplete="off" id="searchInput" type="text" placeholder="Location"/>
+      <div class="menuButton" id="menuButtonSearch" title="Search location" onclick="expandSearch();$('#searchInput').focus();"></div>
+    </div>
+</div>
+
+<!-- menuButtonsBar -->
+
+        </div>
+
+        <div id="currentDate"></div>
+
+
+    </div>
+
+
+        <div id="headerMapControls">
+            <div class="mapControlButton" id="mapControlButtonPlus" title="Zoom in" onclick="mapZoom(+1)"></div>
+            <div class="mapControlButton" id="mapControlButtonMinus" title="Zoom out" onclick="mapZoom(-1)"></div>
+            <div class="mapControlButton dropdown2" id="mapControlButtonLayers" title="Layers">
+                <div class="dropdown-content2">
+            <li id="checkboxShowHideMapColors" onclick="switchLayersVisibility(0)">Map colors</li>
+            <li id="checkboxShowHideSpots" onclick="switchLayersVisibility(1)">Takeoffs</li>
+                </div>
+            </div>
+            <div class="mapControlButton bottom" id="mapControlButtonGps" title="GPS" onclick="mapGps()">
+                <img id="mapControlButtonGpsIcon" src="imgs/icons/gps.svg" />
+            </div>
+        </div>
+
+    <div id="map"></div>
+
+    <div id="hideShadow"></div>
+    <div id="legend" class="tooltip" onclick="switchVisibility('newPopupLegendDefinition')">
+        <span class="tooltiptext">Click to see<br>definition<div class="tooltip--tip"></div></span>
+        <div class="legendSection" id="legendSectionPredictions">
+            <div id="legendTop" class="legendLine">
+                <div class="legendTopFieldTitle" style="flex:0 0 37px">Lat:&nbsp;</div>
+                <div class="legendTopFieldVal" style="flex:0 0 65px" id="legendTopLat"></div>
+                <div class="legendTopFieldTitle">Lon:&nbsp;</div>
+                <div class="legendTopFieldVal"style="flex:0 0 63px" id="legendTopLon"></div>
+                <div class="legendTopFieldTitle" style="flex: 0 0 26px">Alt:&nbsp;</div>
+                <div class="legendTopFieldVal" id="legendTopAlt"></div>
+            </div>
+            <div class="legendLine">
+                <div class="legendLineName">Can I fly?</div>
+                <div class="legendLineValue">
+                    <div id="legendImg1" class="legendImg colorMap">
+                        <div id="legendVal1" class="legendVal">
+                            <div class="legendValA"></div>
+                            <div class="legendValB"></div>
+                            <div class="legendValA"></div>
+                        </div>
+                        <div id="legendValTxt1" class="legendValTxt"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="legendLine">
+                <div class="legendLineName">Can I do XC?</div>
+                <div class="legendLineValue">
+                    <div id="legendImg2" class="legendImg colorMap">
+                        <div id="legendVal2" class="legendVal">
+                            <div class="legendValA"></div>
+                            <div class="legendValB"></div>
+                            <div class="legendValA"></div>
+                        </div>
+                        <div id="legendValTxt2" class="legendValTxt"></div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="legendLine">
+                <div class="legendLineName">Nb flights</div>
+                <div class="legendLineValue">
+                    <div id="legendImg3" class="legendImg">
+                        <div id="legendVal3" class="legendVal">
+                            <div class="legendValA"></div>
+                            <div class="legendValB"></div>
+                            <div class="legendValA"></div>
+                        </div>
+                        <div id="legendValTxt3" class="legendValTxt"></div>
+                    </div>
+                </div>
+            </div>
+            -->
+            
+            <div id="legendFlights" style="display:none" class="legendLine">
+                <div class="legendLineName">Flight score</div>
+                <div class="legendLineValue">
+                    <div id="legendImg4" class="legendImg colorMap">
+                        <svg width="200" height="20">
+                            <circle cx="20"  cy="10" r="1"    stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="41"  cy="10" r="1.78" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="62"  cy="10" r="2.67" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="83"  cy="10" r="3.56" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="104" cy="10" r="4.43" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="125" cy="10" r="5.32" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="146" cy="10" r="6.21" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="167" cy="10" r="7.10" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="188" cy="10" r="8"    stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="legendSection" id="legendSectionKeywords"></div>
+    </div>
+
+    <div id="loaderContainer">
+        <div id="loader"></div>
+        <div id="loaderImg"><img src="imgs/logo/logoSmall70.png" alt="" height="45" /></div>
+    </div>
+
+<!-- --------------------- -->
+
+    <div id="footer">
+        <div class="vignettesContainer"></div>
+        <div id="version"></div>
+    </div>
+
+<!-- bottom navigation bar -->
+
+<div id="mainNavigationBar" class="navigationBar" style="visibility:visible">
+    <div id="vignettesContainer0">
+        <div id="vignettesContainer" class="vignettesContainer"></div>
+    </div>
+    <div id="lastUpdates">
+        <div id="lastUpdateFieldTxt">Last forecast update</div>
+        <div id="lastUpdateTime"></div>
+    </div>
+</div>
+
+<!-- --------------------- -->
+
+<div id="prevNextDayContainer">
+    <div id="prevNextDay">
+        <div class="prevNextLine">
+            <div class="mapControlButton topleft" id="mapControlButtonPrev" title="Previous day" onclick="hideAllModals();moveDay(-1);"></div>
+            <div class="mapControlButton topright" id="mapControlButtonNext" title="Next day"     onclick="hideAllModals();moveDay(+1);"></div>
+        </div>
+        <div class="prevNextLine">
+            <div class="mapControlButton" id="mapControlButtonBackward" title="Past"   onclick="hideAllModals();moveForward(false);"></div>
+            <div class="mapControlButton" id="mapControlButtonForward"  title="Future" onclick="hideAllModals();moveForward(true);"></div>
+        </div>
+    </div>
+    <div id="bottomLeftShadowHider"></div>
+</div>
+
+<!-- --------------------- -->
+
+<div id="apiNavigationBar" class="navigationBar" style="visibility:hidden; width:100%">
+    <div id="apiNavigationBarContainer">
+        <div id="apiNavigationBarContent">
+            <div class="bottomPopupContent">
+                <div class="bottomPopupContent2">
+                    <div class="bottomPopupHeaderCross" onclick="switchMode('main')"></div>
+                    <div style="width:100%;height:100%;display:flex;flex-direction:row">
+                        <div id="apiStepOne" style="flex:1">
+                            <h1>1) Place spots</h1>
+                            <ul>
+                                <li>Click on the map to add a spot</li>
+                                <li>Click on a spot to change its name or remove it</li>
+                            </ul>
+                        </div>
+                        <div id="apiStepTwo" style="flex:1">
+                            <h1>2) Get the key</h1>
+                            <div style="padding-left:20px">
+                                <span>E-mail: <input class="textInput" type="text" id="apiEmail" style="width:180px"> </span>
+                                <span id="apiSendButton" class="textInput" onclick="generateKey();">Send the key <img style="vertical-align:middle;margin-bottom:3px" src="imgs/icons/email-send.svg" height="22"></span> <div style="display:none" id="apiEmailSpinner" class="lds-ellipsis"><div></div><div></div></div><br>
+                                <span style="display:none" id="apiEmailOK"><span class="blinkingText" style="font-size:13px">&#10003; Be sure to check your spam folder.</span></span>
+                                <span style="display:none" id="apiEmailErr" style="font-size:13px">Error</span>
+                                <div style="font-size:10px">If a key already exists with this email, it will be replaced.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottomPopupHeader">
+                <div class="bottomPopupHeaderText">
+                <img style="vertical-align:middle" src="imgs/icons/key.svg" height="11"> <pan style="position:relative;vertical-align:middle;bottom:1px">API key</pan>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- --------------------- -->
+
+<div id="analysisNavigationBar" class="navigationBar" style="visibility:hidden; width:100%">
+    <div id="analysisNavigationBarContainer">
+        <div id="analysisNavigationBarContent">
+            <div class="bottomPopupContent">
+                <div class="bottomPopupContent2" style="padding-left: 2px; padding-right: 2px">
+                    <div class="bottomPopupHeaderCross" onclick="switchMode('main')"></div>
+                        
+<div id="calendar" class="datepicker-container"></div>
+
+                </div>
+            </div>
+            <div class="bottomPopupHeader">
+                <div class="bottomPopupHeaderText">
+                <img style="vertical-align:middle" src="imgs/icons/analysis.svg" height="11"> <pan style="position:relative;vertical-align:middle;bottom:1px">Past data</pan>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function formatDate(year, month, day) {
+        return ('0000' + year).substr(-4) + '-' + ('00' + month).substr(-2) + '-' + ('00' + day).substr(-2);
+    }
+    function getTodayISO() {
+        var today = new Date();
+
+        return formatDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
+    }
+
+    function getMonthHtml(year, month, settings) {
+        var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+        var firstDay = 1;
+                
+        var monthHtml  = '<div class="datepicker-month-container">';
+        monthHtml += '<div class="datepicker-month-header">' + monthNames[month - 1] + ' ' + year + '</div>';
+
+        var monthsFirstDayOfWeek = (new Date(formatDate(year, month, 1))).getUTCDay(),
+            daysPerMonth = month == 4 || month == 6 || month == 9 || month == 11 ? 30
+                : (month == 2 ? (year & 3 || !(year % 25) && year & 15 ? 28 : 29) : 31);
+
+        for (var i = 0; i < (monthsFirstDayOfWeek + 7 - firstDay)%7; i++) {
+            monthHtml = monthHtml + '<div class="datepicker-placeholder"/>';
+        }
+        var today = getTodayISO(),
+            dow = monthsFirstDayOfWeek;
+        for (var d = 1; d <= daysPerMonth; d++) {
+            var classes = [ 'datepicker-day' ],
+                thisDate = formatDate(year, month, d);
+            if (thisDate == today) {
+                classes.push('datepicker-day-today');
+            }
+            if (dow == 0 || dow == 6) {
+                classes.push('datepicker-day-weekend');
+            }
+            monthHtml = monthHtml + '<div id="datepicker_'+ thisDate +'" class="'+ classes.join(' ') + '" onclick="hideAllModals();changeDate(\''+ thisDate +'\')">' + d + '</div>';
+
+            // Increase date of the week
+            dow = dow + 1;
+            if (dow == 7) {
+                dow = 0;
+            }
+        }
+
+        monthHtml = monthHtml + '</div>';
+
+        return monthHtml;
+    }
+
+    function disableMissingAnlDays()
+    {
+        var missingAnlDays = ['2015-03-12','2015-03-13','2015-03-14','2015-03-15','2015-03-16','2015-03-17','2015-03-18','2010-08-26','2010-09-01','2010-10-28','2010-11-10','2011-02-27','2011-03-02','2011-03-03','2011-03-04','2011-03-05','2011-03-06','2011-05-29','2011-05-30','2011-06-07','2011-06-08','2011-06-09','2011-06-10','2011-06-11','2011-06-12','2011-06-21','2011-06-24','2011-06-25','2011-06-26','2011-06-27','2011-07-23','2011-08-03','2011-08-04','2011-08-05','2011-08-08','2011-08-09','2011-08-11','2011-08-12','2011-08-13','2011-08-22','2011-09-10','2011-10-26','2012-01-05','2012-01-07','2012-01-09','2012-03-10','2012-03-11','2012-03-12','2012-05-18','2012-06-09','2012-06-10','2012-06-12','2012-06-13','2012-06-26','2012-07-05','2012-07-06','2012-07-07','2012-07-08','2012-07-29','2012-08-06','2012-08-07','2012-08-08','2012-08-11','2012-08-12','2012-08-27','2012-09-04','2012-09-05','2013-04-11','2013-08-19','2013-08-20','2014-03-24','2014-03-25','2014-03-26','2014-07-22','2014-08-19','2014-09-12','2014-09-13','2014-09-15','2015-01-14','2015-01-15','2015-01-16','2015-01-17','2015-01-18','2015-01-19','2015-01-20','2015-01-21','2015-01-22','2015-01-23','2015-01-24','2015-01-25','2015-01-26','2015-01-27','2015-01-28','2015-01-29','2015-01-30','2015-01-31','2015-02-01','2015-02-02','2015-02-03','2015-02-04','2015-02-05','2015-02-06','2015-02-07','2015-02-08','2015-02-09','2015-02-10','2015-02-11','2015-02-12','2015-02-13','2015-02-14','2015-02-15','2015-02-16','2015-02-17','2015-02-18','2015-02-19','2015-02-20','2015-02-21','2015-02-22','2015-02-23','2015-02-24','2015-02-25','2015-02-26','2015-02-27','2015-02-28','2015-03-01','2015-03-02','2015-03-03','2015-03-04','2015-03-05','2015-03-06','2015-03-07','2015-03-08','2015-03-09','2015-03-10','2015-03-11','2015-03-19','2015-03-20','2015-03-21','2015-03-22','2015-03-23','2015-04-02','2015-04-06','2015-04-10','2015-04-11','2015-04-12','2015-04-13','2015-04-14','2015-04-15','2015-04-16','2015-04-17','2015-04-18','2015-04-19','2015-04-20','2015-04-27','2015-04-28','2015-06-10','2015-06-17','2015-06-19','2015-06-20','2015-07-31','2015-08-01','2015-08-02','2015-08-03','2015-08-04','2015-08-05','2015-08-06','2015-08-07','2015-08-08','2015-09-04','2015-09-07','2015-09-16','2015-09-17','2015-09-18','2015-09-19','2015-09-20','2015-09-22','2015-10-23','2015-10-24','2015-11-02','2015-12-03','2015-12-18','2015-12-19','2015-12-20','2015-12-28','2015-12-29','2016-01-03','2016-01-04','2016-01-05','2016-02-01','2016-04-13','2016-04-14','2016-04-15','2016-04-16','2016-04-17','2016-04-18','2016-04-19','2016-04-20','2016-05-06','2016-05-26','2016-05-27','2016-06-10','2016-06-15','2016-06-16','2016-07-17','2016-07-18','2016-07-19','2016-07-20','2016-07-21','2016-07-22','2016-07-23','2016-07-24','2016-07-25','2016-07-26','2016-07-27','2016-08-25','2016-08-30','2016-08-31','2016-09-29','2016-09-30','2017-02-25','2017-05-11','2017-10-06'];
+
+        for (d=0; d<missingAnlDays.length; d++)
+        {
+            $("#datepicker_"+ missingAnlDays[d]).addClass("disabled");
+            $("#datepicker_"+ missingAnlDays[d]).removeAttr("onclick");
+        }
+    }
+
+    function fillAnlDatepickerIfNeeded()
+    {
+        if ($("#calendar").html() == "")
+        {
+            for (y=2009; y<=2017; y++)
+                for (m=1; m<=12; m++)
+                    $("#calendar").append(getMonthHtml(y, m));
+
+            disableMissingAnlDays();
+
+            $('#calendar').scrollLeft(143*12*4);
+        }
+    }
+</script>
+
+
+
+
+<!-- --------------------- -->
+
+
+<script src="js/paraglidable_lib.js"></script>
+
+<script>
+    // redirect to mobile version
+    /*
+    function detectMobile() { 
+         if( navigator.userAgent.match(/Android/i)
+         || navigator.userAgent.match(/webOS/i)
+         || navigator.userAgent.match(/iPhone/i)
+         || navigator.userAgent.match(/iPad/i)
+         || navigator.userAgent.match(/iPod/i)
+         || navigator.userAgent.match(/BlackBerry/i)
+         || navigator.userAgent.match(/Windows Phone/i)
+         )
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+    }
+
+    if (detectMobile()) {
+        var mobileVersion = getCookie("mobileVersion");
+        if (mobileVersion == "1")
+            window.location.href = "mobile.html";
+    }
+    */
+    //----------------------------------------
+
+//Sentry.init({dsn: 'https://db964094b5ca4939b671097b3aae1829@sentry.io/1322018'});
+
+//=========================================
+// 
+//=========================================
+
+var searcheWidth_interval = null;
+
+var viewCenter = [47,8.5];
+var viewZoom   = 6;
+
+var showHideColorsVal = 1;
+var showHideSpotsVal  = 1;
+
+var g_mode = 'main';
+
+var g_arrColorBlindAngles = [0, 110, 280];
+var colorBlindValue = 0;
+
+//=========================================
+// inputs
+//=========================================
+
+var inputLat  = getQueryVariable("lat");
+var inputLon  = getQueryVariable("lon");
+var inputZoom = getQueryVariable("zoom");
+var inputDay  = getQueryVariable("day");
+
+if (!inputLat || !inputLon || !inputZoom)
+{
+    var strView = getCookie("view");
+
+    if (strView != "") {
+        arView = strView.split(",");
+        viewCenter = [parseFloat(arView[0]), parseFloat(arView[1])];
+        viewZoom   = parseInt(arView[2]);
+    }
+}
+else
+{
+    viewCenter = [parseFloat(inputLat), parseFloat(inputLon)];
+    viewZoom   = parseInt(inputZoom);
+}
+
+//=========================================
+// map creation
+//=========================================
+
+var map = L.map('map', {attributionControl: false, zoomControl: false, minZoom: 4}).setView(viewCenter, viewZoom);
+var vignettesMaps = [];
+
+var g_spotsLayer = null;
+
+//=========================================
+// map events/actions
+//=========================================
+
+function setPosition(lat, lon, drawTarget, zoomIn=true)
+{
+    var zoom = zoomIn ? Math.max(map.getZoom(), 7) : map.getZoom();
+    map.setView([lat, lon], zoom);
+
+    if (drawTarget) {
+        moveMarker(lat, lon, map);
+    }
+}
+
+var g_apiMarkers = {};
+var g_apiMarkerId = 0;
+
+
+
+function removeApiMarker(apiMarkerId)
+{
+    if (g_apiMarkers.hasOwnProperty(apiMarkerId))
+    {
+        map.removeLayer(g_apiMarkers[apiMarkerId]['marker']);
+        delete g_apiMarkers[apiMarkerId];
+    }
+}
+
+function removeAllApiMarkers()
+{
+    for (var apiMarkerId in g_apiMarkers) {
+        removeApiMarker(apiMarkerId);
+    }
+}
+
+function generateKey()
+{
+    var nb = Object.keys(g_apiMarkers).length;
+    if (nb == 0)
+        return;
+
+    $("#apiEmailSpinner").css("display", "inline-block");
+    $("#apiEmailOK"     ).css("display", "none");
+    $("#apiEmailErr"    ).css("display", "none");
+
+    var urlParams = "?email="+encodeURI($('#apiEmail').val());
+    var i = 0;
+    for (var key in g_apiMarkers)
+    {
+        if (g_apiMarkers.hasOwnProperty(key))
+        {
+            var latlon = g_apiMarkers[key]['marker'].getLatLng();
+            var name   = g_apiMarkers[key]['name'];
+            var spotId = g_apiMarkers[key]['spotId'];
+            var stri   = i.toString();
+
+            urlParams += "&lat_"+    stri +"="+ latlon.lat.toFixed(5).toString() +
+                         "&lon_"+    stri +"="+ latlon.lng.toFixed(5).toString() +
+                         "&spotId_"+ stri +"="+ spotId.toString() +
+                         "&name_"+   stri +"="+ encodeURI(name);
+            i++;
+        }
+    }
+
+    $.ajax({
+        type:     "GET",
+        url:      "/apps/api/generateApiKey.php"+ urlParams,
+        dataType: "text",
+        success: function(data)    {
+                                        $("#apiEmailSpinner").css("display", "none");
+                                        $("#apiEmailOK"     ).css("display", "inline-block");
+                                        $("#apiEmailErr"    ).css("display", "none");
+                                   },
+        error:   function (result) {
+                                        $("#apiEmailSpinner").css("display", "none");
+                                        $("#apiEmailOK"     ).css("display", "none");
+                                        $("#apiEmailErr"    ).css("display", "inline-block");
+                                   }
+    });
+
+}
+
+function apiSpotNameChange(id)
+{
+    g_apiMarkers[id]['name'] = $("#apiSpotName-"+ id).val();
+}
+
+function clearUntitled(id)
+{
+    if ($("#apiSpotName-"+ id).val() == "untitled")
+        $("#apiSpotName-"+ id).val("");
+}
+
+function apiMarkerPopupContent(id, spotId=-1, value="")
+{
+    if (id in g_apiMarkers) {
+        value  = g_apiMarkers[id]['name'];
+        spotId = g_apiMarkers[id]['spotId'];
+    }
+    var nameId = "apiSpotName-"+ id.toString();
+    var customPopup = '<div style="margin:20px 20px 13px 5px">';
+    if (spotId >= 0)
+        customPopup += '<span style="font-size:smaller"><span style="font-weight:bold">Takeoff:</span> takeoff probability<br>will be added to the forecasts<br><br></span>';
+    customPopup += 'Name: <input id="'+ nameId +'" class="apiMarkerNameInputText" onclick="clearUntitled('+ id.toString() +')" onkeyup="apiSpotNameChange('+id.toString()+')" onchange="apiSpotNameChange('+ id.toString() +')" type="text" value="'+ value +'"><br/><br/>\
+                        <span style="cursor:pointer;position:absolute;right:4px;bottom:4px;" onclick="removeApiMarker('+ id.toString() +')"><img src="imgs/icons/remove.svg" width="16"></span></div>';
+    return customPopup;
+}
+
+function onApiMarkerClick(e)
+{
+    var popup = e.target.getPopup();
+    popup.setContent( apiMarkerPopupContent(this.options.myCustomId) );
+}
+
+function addApiMarker(lat, lon, spotId=-1, name="")
+{
+    var nb = Object.keys(g_apiMarkers).length;
+    if (nb >= 10)
+        return;
+
+    // create popup contents
+    var customPopup = apiMarkerPopupContent(g_apiMarkerId, spotId, name);
+    
+    // specify popup options 
+    var customOptions =
+        {
+        'maxWidth': '500',
+        'className' : 'apiMarker'
+        }
+    
+    // create marker object, pass custom icon as option, pass content and options to popup, add to map
+    var newMarker = L.marker([lat, lon], {myCustomId: g_apiMarkerId}).bindPopup(customPopup,customOptions).addTo(map)
+
+    newMarker.on('click', onApiMarkerClick);
+
+    g_apiMarkers[g_apiMarkerId] = {'marker': newMarker, 'name': name, 'spotId': spotId};
+
+    // open marker popup
+    newMarker.openPopup();
+
+    g_apiMarkerId++;
+}
+
+function mapClick(lat, lon)
+{
+    hideAllModals();
+
+    if (g_mode == 'main')
+    {
+        setPosition(lat, lon, false);
+    }
+    else if (g_mode == 'api')
+    {
+        addApiMarker(lat, lon);
+    }
+    else if (g_mode == 'analysis')
+    {
+        setPosition(lat, lon, false, false);
+    }
+}
+
+map.on('click', function(e) {mapClick(e.latlng.lat, e.latlng.lng);});
+
+/*
+map.on('contextmenu', function(e) {
+    alert(e.latlng);
+});
+*/
+//=========================================
+// Legend
+//=========================================
+
+function setLegendCursor(legendValId, legendValTxtId, val)
+{
+    $('#'+legendValTxtId).html(Math.round(val*100.0) +"%");
+    $('#'+legendValId).css   ('margin-left', val*(parseInt($('.legendImg').css('width'), 10)-1)-1);
+
+    if (val <= 0.5) {
+        $('#'+legendValTxtId).css('text-align',   'left');
+        $('#'+legendValTxtId).css('margin-left', val*(parseInt($('.legendImg').css('width'), 10)-1));
+    } else {
+        $('#'+legendValTxtId).css('text-align',   'right');
+        $('#'+legendValTxtId).css('margin-left', val*(parseInt($('.legendImg').css('width'), 10)-1) - parseInt($('.legendValTxt').css('width'), 10) - parseInt($('.legendValTxt').css('padding-left'), 10) - parseInt($('.legendValTxt').css('padding-right'), 10));
+    }
+}
+
+function warningLegendVal(predictionVal)
+{
+    if (predictionVal != null) {
+        return 1.0 - 3.0/2.0*predictionVal;
+    } else {
+        return -1.0;
+    }
+}
+
+function displayKeyWords(val_flyability,
+                         val_wind, val_water,
+                         val_windAngle)
+{
+    // keywords
+    keywords = [];
+    keywords.push(['Wind',     warningLegendVal(val_wind),    '#A00000']);
+    keywords.push(['Humidity', warningLegendVal(val_water),   '#A00000']);
+
+    //keywords.push(['Plaf élevé (WIP fake)', Math.max(0.0, Math.sin(1.5*lon)), '#00A000']);
+
+    keywords.sort(function(x, y) {
+        return y[1] - x[1];
+    });
+
+    if ($('#legendSectionKeywords').html() == '')
+    {
+        keywordsHtml = '';
+        for (kw=0; kw<keywords.length; kw++)
+        {
+            keywordsHtml += '<div class="legendLineKeyWords" id="keywordLine'+ kw +'"> \
+                                <div class="legendLineNameKeywords" id="keywordLineW'+ kw +'"></div> \
+                                <div class="legendLineValueKeywords" id="keywordLineV'+ kw +'">\
+                                    <div class="keywordVal" id="keyword'+ kw +'Val"></div>\
+                                </div> \
+                             </div>'
+        }
+        $('#legendSectionKeywords').html(keywordsHtml);
+    }
+
+
+    nbVisibleKeywords = 0;
+    for (kw=0; kw<keywords.length; kw++)
+    {
+        if (keywords[kw][1] > 0.0) {
+            $('#keywordLineW'+ kw).html(keywords[kw][0]);
+            $('#keyword'+ kw +'Val').css("width", Math.round(keywords[kw][1]*150));
+            $('#keyword'+ kw +'Val').css("background-color", keywords[kw][2]);
+            $('#keywordLineW'+ kw).css("height", "14px");
+            $('#keywordLineV'+ kw).css("height", "12px");
+            $('#keywordLine' + kw).css("height", "14px");
+            $('#keywordLine' + kw).css("padding-bottom", "2px");
+            $('#keywordLineV'+ kw).css("visibility", "visible");
+
+            if(keywords[kw][0] == 'Wind')
+            {
+                var angleDeg = 180 - val_windAngle/Math.PI*180;
+                $('#keywordLineW'+ kw).append(' <img src="imgs/icons/wind_arrow.svg" style="width:9px;height:9px;transform:rotate('+ angleDeg.toString() +'deg)">');
+            }
+            nbVisibleKeywords++;
+        }
+        else
+        {
+            $('#keywordLineW'+ kw).css("height", "0px");
+            $('#keywordLineV'+ kw).css("height", "0px");
+            $('#keywordLine' + kw).css("height", "0px");
+            $('#keywordLine' + kw).css("padding-bottom", "0px");
+            $('#keywordLineV'+ kw).css("visibility", "hidden");
+        }
+    }
+
+    if (nbVisibleKeywords==0) {
+        $('#legendSectionKeywords').removeClass('active');
+        $('#legendSectionPredictions').removeClass('active');
+    }
+    else {
+        $('#legendSectionKeywords').addClass('active');
+        $('#legendSectionPredictions').addClass('active');
+        applyColorBlind("keywordVal");
+    }
+}
+
+function displayPredictions(arValues)
+{
+    if (arValues.length == 0)
+        return;
+
+    //console.log(arValues);
+
+    val_flyability     =  arValues[0];
+    val_cross          =  arValues[1];
+    val_wind           =  arValues[2];
+    val_water          =  arValues[3];
+    val_attractiveness =  arValues[4];
+    val_windAngle      = (arValues[5]*4.0 - 2.0)*Math.PI;
+
+    showLegendValues();
+    setLegendCursor('legendVal1', 'legendValTxt1', val_flyability);
+    setLegendCursor('legendVal2', 'legendValTxt2', val_cross);
+    if (val_attractiveness != null) {
+        //setLegendCursor('legendVal3', 'legendValTxt3', val_attractiveness);
+    }
+
+    displayKeyWords(val_flyability, val_wind, val_water, val_windAngle);
+}
+
+function displayElevation(strElev) {
+    $("#legendTopAlt").html(strElev +"m");
+}
+
+//=========================================
+// tiles
+//=========================================
+
+function createBaseTilesLayers(className)
+{
+    var options = {
+                    attribution: '',
+                    subdomains: 'abcd',
+                    minZoom: 0,
+                    maxNativeZoom: 14,
+                    ext: 'png',
+                    detectRetina: true,
+                    errorTileUrl: '/imgs/tileNotFound.png',
+                    className: className
+                  };
+
+    var Stamen_Terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', options);
+
+    return Stamen_Terrain;
+}
+
+function tilesUrl(date, transpa)
+{
+    if (g_mode == 'analysis')
+    {
+        tilesdir = 'data/tiles_anl';
+        transpa = true;
+    }
+    else
+    {
+        tilesdir = 'data/tiles';
+    }
+
+    if (transpa)
+        return tilesdir +'/'+ date +'/256/{z}/{x}/{y}_transpa.{ext}';
+    else
+        return tilesdir +'/'+ date +'/256/{z}/{x}/{y}.{ext}';
+}
+
+var paraglidableTiles = null;
+
+//=========================================
+// change date
+//=========================================
+
+var g_nbDays = 10;
+var g_modePast = false;
+var g_strDate = "";
+const g_switchZoom = L.Browser.retina ? 9 : 10;
+
+//========================================================
+// actions
+//========================================================
+
+var g_lastZoom = {};
+
+function createMyTilesLayers(date, className, zoom, isRetina)
+{
+    var layer = L.tileLayer(tilesUrl(date, zoom >= g_switchZoom), {
+        attribution: '',
+        minNativeZoom: isRetina ? 4 : 5,
+        maxNativeZoom: g_switchZoom-1,
+        minZoom: 1,
+        //maxZoom: 12,
+        ext: 'png',
+        detectRetina: true,
+        className: className,
+        bounds: g_latLngBoundingBox,
+        errorTileUrl: '/imgs/tileNotFound.png' });
+
+    return layer;
+}
+
+function updateTiles(theMap, myTiles, baseTiles, zoomIdx, date)
+{
+    if (date=="") // the case for the main map only
+        date = g_strDate;
+
+    var zoom = theMap.getZoom();
+
+    if (zoom >= g_switchZoom && (!(zoomIdx in g_lastZoom) || !(g_lastZoom[zoomIdx] >= g_switchZoom)))
+    {
+        myTiles.setUrl(tilesUrl(date, true));
+    }
+    else if (zoom < g_switchZoom && (!(zoomIdx in g_lastZoom) || !(g_lastZoom[zoomIdx] < g_switchZoom)))
+    {
+        myTiles.setUrl(tilesUrl(date, false));
+    }
+
+    g_lastZoom[zoomIdx] = zoom;
+}
+
+function addTilesSwitcher(map, myTiles, baseTiles, zoomIdx, date)
+{
+    map.on('zoomend', 
+        (function(theMap, myTiles, baseTiles, zoomIdx, date) { return function(e) {updateTiles(theMap, myTiles, baseTiles, zoomIdx, date);} })(map, myTiles, baseTiles, zoomIdx, date)
+    );
+}
+
+function updateCurrentDateTitle()
+{
+    if (!g_strDate)
+        return;
+
+    var showYear = (g_mode == 'analysis');
+    var showDow  = (g_mode != 'analysis');
+    $('#currentDate').html(displayDate(moment(g_strDate, "YYYY-MM-DD"), true, true, showYear, showDow));
+}
+
+
+
+
+//========================================================================================
+// spots
+//========================================================================================
+
+function myOpenPopup(feature, layer)
+{
+    //var color = flyabilityColor(feature.properties.flyability);
+    //$('html > head').append($('<style>.leaflet-popup-content-wrapper, .leaflet-popup-tip { background:'+ color +'; }</style>'));
+
+    layer.openPopup(); 
+}
+
+function loadSpots(decodedJson)
+{
+    if (g_spotsLayer != null) {
+        if (map.hasLayer(g_spotsLayer))
+            map.removeLayer(g_spotsLayer);
+    }
+
+    g_spotsLayer = L.geoJson(decodedJson, {
+                style : function(feature) {
+                    return feature.properties && feature.properties.style;
+                },
+
+                pointToLayer : function(feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        radius : 4.4, // + Math.sqrt(feature.properties.nbFlights/800.0)
+                        fillColor : flyabilityColor_with_colorblind(feature.properties.flyability),
+                        color : "#000",
+                        weight : 1,
+                        opacity : 1,
+                        fillOpacity : 1.0
+                    });
+                },
+
+                onEachFeature: function(feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                        layer.bindPopup(popupContent(feature.properties.name, 
+                                                     feature.properties.flyability,
+                                                     feature.properties.id,
+                                                     feature.properties.nbFlights), {closeButton: false, offset: L.point(0, -10)});
+                        layer.on('mouseover', function() { myOpenPopup(feature, layer);});
+                        layer.on('mouseout', function() { layer.closePopup(); });
+                        layer.on('click', function() { if (g_mode == 'api') {
+                                                            addApiMarker(feature['geometry']['coordinates'][1],
+                                                                         feature['geometry']['coordinates'][0],
+                                                                         feature.properties.id,
+                                                                         feature.properties.name.split(/,,,/g)[0]);
+                                                        }
+                                                      }
+                                );
+                    }
+                }
+            }
+                                );
+    
+    if (showHideSpotsVal==1)
+    {
+        if (!map.hasLayer(g_spotsLayer))
+            g_spotsLayer.addTo(map);
+    }
+}
+
+//========================================================================================
+//
+//========================================================================================
+
+function downloadSpotsPredictions()
+{
+    if (g_spotsLayer != null) {
+        if (map.hasLayer(g_spotsLayer))
+            map.removeLayer(g_spotsLayer);
+    }
+
+    $.getJSON("data/tiles/"+ g_strDate +"/spots.json", function(data){loadSpots(data)});
+}
+
+function changeDate(strDate)
+{
+    g_strDate = strDate;
+    updateUrl();
+
+    document.getElementById('loaderContainer').style.display = "block";
+
+    changePastModeFromStrDate(strDate);
+    updateSelectedVignetteDay();
+    updateCurrentDateTitle();
+    updateLastUpdateDate();
+    updatePrevNextButtons();
+    downloadSpotsPredictions();
+
+    //
+    if (paraglidableTiles == null)
+    {
+        var baseTilesLayer = createBaseTilesLayers("basetiles");
+        baseTilesLayer.addTo(map);
+
+        paraglidableTiles = createMyTilesLayers(strDate, 'mytiles-main colorMap', map.getZoom(), L.Browser.retina);
+        paraglidableTiles.on('load', function (event) {
+            document.getElementById('loaderContainer').style.display = "none";
+        });
+        paraglidableTiles.addTo(map);
+
+        updateTiles(map, paraglidableTiles, baseTilesLayer, 0, "");
+        addTilesSwitcher(map, paraglidableTiles, baseTilesLayer, 0, "");
+    }
+    else
+    {
+        paraglidableTiles.setUrl(tilesUrl(strDate, map.getZoom() >= g_switchZoom));
+    }
+}
+
+function moveDay(deltaDay)
+{
+    var newStrDate = moment(g_strDate, "YYYY-MM-DD").add(deltaDay, 'days').format("YYYY-MM-DD");
+
+    if (isSelectableDate(newStrDate))
+        changeDate(newStrDate);
+}
+
+function changePastMode(mode)
+{
+    if (g_modePast != mode)
+    {
+        g_modePast = mode;
+        updateVignettes();
+        updatePrevNextButtons();
+    }
+}
+
+function moveForward(forward)
+{
+    if (g_mode == 'main')
+    {
+        var mode = !forward;
+        if (g_modePast != mode)
+        {
+            g_modePast = mode;
+            updateVignettes();
+            updatePrevNextButtons();
+        }
+    }
+    else if (g_mode == 'analysis')
+    {
+        moveDay(forward ? 7 : -7);
+    }
+}
+
+
+function changePastModeFromStrDate(strDate)
+{
+    var diffDays = getStrDateDiffDays(strDate);
+
+    if (diffDays < 0 && !g_modePast) {
+        changePastMode(true);
+    }
+    else if (diffDays >= 0 && g_modePast) {
+        changePastMode(false);
+    }
+}
+
+//========================================================
+// update display at loading or after action
+//========================================================
+
+function updatePrevNextButtons()
+{
+    if (g_mode=='main')
+    {
+        if (g_modePast) {
+            $('#mapControlButtonForward').removeClass('disabled');
+            $('#mapControlButtonBackward').addClass('disabled');
+        } else {
+            $('#mapControlButtonForward').addClass('disabled');
+            $('#mapControlButtonBackward').removeClass('disabled');
+        }
+
+
+        if (isSelectableDate(getStrDatePrevDay(g_strDate))) {
+            $('#mapControlButtonPrev').removeClass('disabled');
+        } else {
+            $('#mapControlButtonPrev').addClass('disabled');
+        }
+        if (isSelectableDate(getStrDateNextDay(g_strDate))) {
+            $('#mapControlButtonNext').removeClass('disabled');
+        } else {
+            $('#mapControlButtonNext').addClass('disabled');
+        }
+    }
+    else
+    {
+        $('#mapControlButtonForward').removeClass('disabled');
+        $('#mapControlButtonBackward').removeClass('disabled');
+        $('#mapControlButtonPrev').removeClass('disabled');
+        $('#mapControlButtonNext').removeClass('disabled');
+    }
+}
+
+function updateSelectedVignetteDay()
+{
+    if (g_mode == 'main')
+    {
+        const firstD = (g_modePast ? -g_nbDays : 0       );
+        const lastD  = (g_modePast ?         0 : g_nbDays) - 1;
+
+        for (d=firstD; d<=lastD; d++)
+        {
+            var strDate2 = moment().add(d, 'days').format("YYYY-MM-DD");
+
+            if (strDate2 != g_strDate) {
+                $('#newDayTxt-'    + strDate2).removeClass('active');
+                $('#newDay-'    + strDate2).removeClass('active');
+            } else {
+                $('#newDayTxt-'    + strDate2).addClass('active');
+                $('#newDay-'    + strDate2).addClass('active');
+            }
+        }
+    }
+    else if (g_mode == 'analysis')
+    {
+        $('.datepicker-day.selected').removeClass('selected');
+        $('#datepicker_'+g_strDate).addClass('selected');
+    }
+}
+
+function updateLastUpdateDate()
+{
+    const strDate = g_strDate;
+
+    var client = new XMLHttpRequest();
+    client.open("GET", "data/tiles/"+ strDate +"/progress.txt", true);
+    client.send();
+
+    client.onreadystatechange = function() {
+            if(this.readyState == this.HEADERS_RECEIVED) {
+                var lastModified = this.getResponseHeader("Last-Modified");
+                if (lastModified != null)
+                {
+                    if (moment(lastModified).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'))
+                        $('#lastUpdateTime').html('Today at '+moment(lastModified).format('HH:mm'));
+                    else
+                        $('#lastUpdateTime').html(moment(lastModified).format('YYYY-MM-DD HH:mm'));
+                }
+                else
+                {
+                    $('#lastUpdateTime').html("");
+                }
+            }
+        }
+}
+
+function showLegendValues()
+{
+    $(".legendVal").css(   "visibility", "visible");
+    $(".legendValTxt").css("visibility", "visible");
+}
+
+function hideLegendValues()
+{
+    $(".legendVal").css   ("visibility", "hidden");
+    $(".legendValTxt").css("visibility", "hidden");
+}
+
+function hideKeywords()
+{
+    //$(".legendLineValueKeywords").css("visibility", "hidden");
+    displayKeyWords(0.0, 1.0, 1.0, 0.0);
+}
+
+
+//============================================================================================
+// 
+//============================================================================================
+
+
+
+const latlngToTilePixel = (latlng, crs, zoom, tileSize, pixelOrigin) => {
+    const layerPoint = crs.latLngToPoint(latlng, zoom).floor();
+    const tile = new L.Point(Math.floor(layerPoint.x/tileSize.x), Math.floor(layerPoint.y/tileSize.y));
+    const tileCorner = new L.Point(tile.x * tileSize.x - pixelOrigin.x, tile.y * tileSize.y - pixelOrigin.y);
+    const tilePixel = layerPoint.subtract(pixelOrigin).subtract(tileCorner);
+
+    return [tile, tilePixel];
+}
+
+
+
+var lat, lng;
+var rect = null;
+
+var g_lastLatlng = null;
+var g_lastTx = -1;
+var g_lastTy = -1;
+var g_lastX  = -1;
+var g_lastY  = -1;
+var g_timerRequestValues = null;
+
+function requestValues()
+{
+    if (g_mode != 'main') {
+        hideLegendValues();
+        return;
+    }
+
+    const dataTilesZoom = 7;
+
+
+    $.ajax({
+        type: "GET",
+        url: 'apps/api/get.php?elev=1&tx='+ g_lastTx +'&ty='+ g_lastTy +'&x='+ g_lastX +'&y='+ g_lastY +'&zoom='+ dataTilesZoom +'&date='+ g_strDate,
+        dataType: "text",
+        success: function(data)    {
+                                        //data = "0.75,0.25,0.2941,0.5333,0.7804,0.4078;833";
+
+                                        if (g_lastLatlng != null) {
+                                            $("#legendTopLat").html(g_lastLatlng.lat.toFixed(4) +"&deg;");
+                                            $("#legendTopLon").html(g_lastLatlng.lng.toFixed(4) +"&deg;");
+                                        }
+
+                                        if (data.length > 0)
+                                        {
+                                            const predictions_elevation = data.split(';');
+
+                                            // predictions
+                                            const strVals = predictions_elevation[0].split(',');
+                                            var arValues = [];
+                                            for (v=0; v<strVals.length; v++) {
+                                                arValues.push(parseFloat(strVals[v]));
+                                            }
+                                            displayPredictions(arValues);
+
+                                            // elevation
+                                            if (predictions_elevation.length > 1) {
+                                                const strElev = predictions_elevation[1];
+                                                displayElevation(strElev);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            hideLegendValues();
+                                        }
+                                   },
+        error:   function (result) { }
+    });
+}
+
+map.addEventListener('mousemove', function(ev) {
+
+    const dataTilesZoom = 7;
+    const tileSize = new L.Point(256, 256);
+    const tileCoords = latlngToTilePixel(ev.latlng, map.options.crs, dataTilesZoom, tileSize, map.getPixelOrigin());
+
+    const tx = tileCoords[0].x;
+    const ty = tileCoords[0].y;
+    const x  = tileCoords[1].x;
+    const y  = tileCoords[1].y;
+
+    if (tx != g_lastTx || ty != g_lastTy || x != g_lastX || y != g_lastY)
+    {
+        g_lastTx = tx;
+        g_lastTy = ty;
+        g_lastX  = x;
+        g_lastY  = y;
+        g_lastLatlng = ev.latlng;
+
+        if (g_timerRequestValues != null)
+            window.clearTimeout(g_timerRequestValues);
+
+        g_timerRequestValues = setTimeout(function(){ requestValues(); }, 50); // prevent sending too much requests
+    }
+});
+
+function updateUrl()
+{
+    newCenter = map.getCenter();
+    newZoom   = map.getZoom();
+    strDate   = g_strDate;
+
+    window.history.replaceState('page2', 'Paraglidable', '/?lat='+ newCenter.lat.toFixed(3) +"&lon="+ newCenter.lng.toFixed(3) +"&zoom="+ newZoom);// +"&day="+ strDate);
+    
+    var shareURL = "https://paraglidable.com/shared.php?lat="+ newCenter.lat.toFixed(3) +"&lon="+ newCenter.lng.toFixed(3) +"&zoom="+ newZoom +"&day="+ strDate;
+    //console.log(shareURL);
+    //$("#shareLinkUrl").html(shareURL);
+}
+
+function updateVignettesView()
+{
+    newCenter = map.getCenter();
+    newZoom   = map.getZoom();
+
+    for (v=0; v<vignettesMaps.length; v++) {
+        vignettesMaps[v].setView(newCenter, Math.max(0, newZoom-3));
+    }
+}
+
+function onUpdateView_()
+{
+    hideAllModals();
+    newCenter = map.getCenter();
+    newZoom   = map.getZoom();
+
+    updateVignettesView();
+    updateUrl();
+    setCookie("view", newCenter.lat +","+ newCenter.lng +","+ newZoom, 30*6);
+}
+
+map.addEventListener('moveend', onUpdateView_);
+
+
+$.getJSON("imgs/oceans.json", function(data){addOceans(data, [map])});
+
+
+function addOceans(decodedJson, arMaps)
+{
+    for (m=0; m<arMaps.length; m++)
+    {
+        // can't share the same layer with all maps (https://stackoverflow.com/questions/18235075/leaflet-add-same-layer-to-two-different-maps)
+        var oceansLayer = L.geoJson(decodedJson, {
+                                                style: function(feature) {
+                                                            return {"fillOpacity": 1.0, fillColor: '#0071cb', color:'#000', weight:1};
+                                                       }
+                                                 }
+                                    );
+        oceansLayer.addTo(arMaps[m]);
+    }
+}
+
+function updateVignettes()
+{
+    var htmlContent  = '';
+    
+    const firstD = (g_modePast ? -g_nbDays : 0       );
+    const lastD  = (g_modePast ?         0 : g_nbDays) - 1;
+
+    arWeeks = [];
+    for (d=firstD; d<=lastD; d++)
+    {
+        var momentDate = moment().add(d, 'days');
+        var dow = momentDate.isoWeekday();
+
+        if (dow==1 || (d == firstD))
+            arWeeks.push([]);
+
+        arWeeks[arWeeks.length-1].push(momentDate);
+    }
+
+    //==========================================================
+    // fill #vignettesContainer
+    //==========================================================
+
+    for  (w=0; w<arWeeks.length; w++)
+    {
+        if (w > 0) {
+            htmlContent  += '<div class="vignettesSpacerWeek"></div>';
+        }
+
+        htmlContent  += '<div id="newWeekContainer" style="flex:'+ arWeeks[w].length +'">';
+
+        for (d=0; d<arWeeks[w].length; d++)
+        {
+            var momentDate = arWeeks[w][d];
+            var strDate = momentDate.format("YYYY-MM-DD");
+
+            //=================================================
+
+            var firstLastClass = ''
+            if (d==0) firstLastClass += ' first';
+            if (d==arWeeks[w].length-1) firstLastClass += ' last';
+
+
+            htmlContent  += '<div id="newDay-'+ strDate +'" class="newDay'+ firstLastClass +'" onclick="hideAllModals();changeDate(\''+ strDate +'\');"> \
+                    <div class=\"newDayMap'+ firstLastClass +'\"><div class="newDayLeafletMap" id="map-'+ strDate +'"></div></div>\
+                    <div id="newDayTxt-'+ strDate +'" class=\"newDayTxt\">'+ displayDate(momentDate) +'</div>\
+            </div>';
+        }
+
+        htmlContent  += '</div>';
+    }
+
+
+    $('#vignettesContainer').html(htmlContent);
+
+    //==========================================================
+    // Hide days with no tiles
+    //==========================================================
+
+    for (d=firstD; d<=lastD; d++)
+    {
+        var strDate = moment().add(d, 'days').format("YYYY-MM-DD");
+
+        var client = new XMLHttpRequest();
+        client.open("GET", "data/tiles/"+ strDate +"/progress.txt", true);
+        client.send();
+
+        client.onreadystatechange = (function(strDate) {
+            return function()
+            {
+                if(this.readyState == this.HEADERS_RECEIVED)
+                {
+                    if (this.getResponseHeader("Last-Modified") == null)
+                    {
+                        $("#map-"+ strDate).addClass("notAvailable");
+                        $("#map-"+ strDate).html("<div style=\"padding-top:10px\">Not<br>available<br>yet</div>");
+                    }
+                }
+            }
+        })(strDate);
+    }
+
+    //==========================================================
+    // Create maps
+    //==========================================================
+
+    vignettesMaps = [];
+
+    for  (w=0; w<arWeeks.length; w++)
+    {
+        for (d=0; d<arWeeks[w].length; d++)
+        {
+            var momentDate = arWeeks[w][d];
+            var strDate = momentDate.format("YYYY-MM-DD");
+
+            vMap = L.map('map-'+strDate, {attributionControl: false, zoomControl: false, keyboard: false});
+
+            vMap.dragging.disable();
+            vMap.touchZoom.disable();
+            vMap.doubleClickZoom.disable();
+            vMap.scrollWheelZoom.disable();
+
+            const baseTiles = createBaseTilesLayers("basetiles-vignette");
+            const myTiles   = createMyTilesLayers(strDate, 'colorMap', map.getZoom()-3, L.Browser.retina);
+            baseTiles.addTo(vMap);
+            myTiles.addTo(vMap);
+
+
+            updateTiles     (vMap, myTiles, baseTiles, vignettesMaps.length+1, strDate);
+            addTilesSwitcher(vMap, myTiles, baseTiles, vignettesMaps.length+1, strDate);
+
+            vignettesMaps.push(vMap);
+
+        }
+    }
+
+    updateVignettesView();
+    updateSelectedVignetteDay();
+    updateCurrentDateTitle();
+
+    $.getJSON("imgs/oceans.json", function(data){addOceans(data, vignettesMaps)});
+}
+
+updatePrevNextButtons();
+updateVignettes();
+
+//=========================================
+// Select day
+//=========================================
+
+function getStrDatePrevDay(strDate)
+{
+    return moment(strDate, "YYYY-MM-DD").add(-1, 'days').format("YYYY-MM-DD");
+}
+
+function getStrDateNextDay(strDate)
+{
+    return moment(strDate, "YYYY-MM-DD").add(+1, 'days').format("YYYY-MM-DD");
+}
+
+function isSelectableDate(strDate)
+{
+    if (!strDate || !moment(strDate, "YYYY-MM-DD").isValid())
+        return false;
+    
+    if (g_mode == 'analysis')
+        return true;
+
+    var diffDays = getStrDateDiffDays(strDate);
+    return (diffDays > -g_nbDays-1 && diffDays < g_nbDays);
+}
+
+//=========================================
+// Modals functions
+//=========================================
+
+function hideAllModals()
+{
+    $(".newModal").css("display", "none");
+}
+
+document.addEventListener('keyup', function(e) {
+    if (e.keyCode == 27 && !$("#searchInput").is(":focus")) {
+        hideAllModals();
+        switchMode('main');
+    }
+});
+
+function switchVisibility(id) {
+    if ($('#'+id).css('display') == 'none') {
+        hideAllModals();
+        $('#'+id).css('display', 'inline');
+    } else {
+        $('#'+id).css('display', 'none');
+    }
+}
+
+//=========================================
+// Autocomplete
+//=========================================
+
+</script>
+<script src="js/third_parties/autocomplete.js"></script>
+<script>
+
+function expandSearch()
+{
+    if (parseInt($("#searchInput").hasClass("active")))
+    {
+        tryRetractSarch();
+    }
+    else
+    {
+        clearInterval(searcheWidth_interval);
+        searcheWidth_interval = setInterval(tryRetractSarch, 2000);
+        $("#searchInput").addClass('active');
+    }
+}
+
+function tryRetractSarch()
+{
+    if (!$("#searchInput").is(':focus'))
+    {
+        $("#searchInput").removeClass('active');
+        $("#searchInput").val("");
+        clearInterval(searcheWidth_interval);
+    }
+}
+
+$("#searchInput").focus(expandSearch);
+$("#searchInput").focusout(tryRetractSarch);
+
+var autocomplete = new kt.OsmNamesAutocomplete('searchInput', 'apps/search.php?q=', '');
+autocomplete.registerCallback(function(item) {
+    setPosition(item['lat'], item['lon'], true);
+});
+
+//=========================================
+// 
+//=========================================
+
+function gpsLocationFound(e)
+{
+    setPosition(e.latlng.lat, e.latlng.lng, true);
+    $("#mapControlButtonGpsIcon").removeClass('searching');
+    $("#mapControlButtonGpsIcon").attr('src','imgs/icons/gps.svg');
+    $("#mapControlButtonGps").removeClass('disabled');
+}
+function gpsLocationError(e)
+{
+    $("#mapControlButtonGpsIcon").removeClass('searching');
+    $("#mapControlButtonGpsIcon").attr('src','imgs/icons/gps-disabled.svg');
+    $("#mapControlButtonGps").addClass('disabled');
+}
+
+map.on('locationfound', gpsLocationFound)
+   .on('locationerror', gpsLocationError);
+
+function mapZoom(direction)
+{
+    map.setZoom(Math.max(map.getZoom() + direction, 0));
+}
+
+function mapGps()
+{
+    $("#mapControlButtonGpsIcon").addClass('searching');
+
+    map.locate({ enableHighAccuracy: true,
+                 watch: false,
+                 setView: false  }); 
+}
+</script>
+
+
+
+    <div id="newPopupShareLink" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">Share link</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+                
+                link /?lat='+ newCenter.lat.toFixed(3) +"&lon="+ newCenter.lng.toFixed(3) +"&zoom="+ newZoom);// +"&day="+ strDate
+                <span id="shareLinkUrl"></span>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="newPopupAbout" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">What is it?</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+                <div style="width:100%">
+                </div>
+
+                <p>
+                    <b>Paraglidable is an AI-based flying conditions forecasting program for paragliding.</b><br>
+                    <br>
+                    It uses state-of-the-art artificial intelligence algorithms to interpret weather forecasts from multiple sources as comprehensible flying condition parameters.
+                    The AI examines the precipitations, cloud cover, wind at different altitudes etc. to know if you will be able to fly or not.
+					Paraglidable studies for you ~200 weather parameters for each day and produces a clear summary.
+                    Futhermore, Paraglidable is able to predict how good the day will be for cross country flying.<br>
+                    <br>
+                    To learn more about how it actually works, please follow <a style="cursor:pointer" onclick="switchVisibility('newPopupHowDoesItWork')">this link</a>.<br>
+					<br>
+                    To go even further and contribute, you can now find Paraglidable open-sourced on <a href="https://github.com/AntoineMeler/Paraglidable" target="_blank">GitHub</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="newPopupLegendDefinition" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">Legend</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+
+                <h1>Can I Fly?</h1>
+                <p>
+                    Probability that a flight will be reported, given the full weather vector of the day, assuming a given paragliders local population.
+                </p>
+
+                <h1>Can I do XC?</h1>
+                <p>
+                    Probability that a flight of 60 points or more (using PWC scoring) will be reported, given the full weather vector of the day, assuming a given paragliders local population.
+                </p>
+
+                <h1><pan style="color:#C35E5E">Wind</pan></h1>
+                <p>
+                    1 - 3/2 * (probability that a flight will be reported, given the wind-related weather parameters, assuming a given paragliders local population)
+                </p>
+
+                <h1><pan style="color:#C35E5E">Humidity</pan></h1>
+                <p>
+                    1 - 3/2 * (probability that a flight will be reported, given the humidity-related weather parameters, assuming a given paragliders local population)
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="newPopupAboutApi" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">What is the API?</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+                <p>
+                    The paraglidable API let you integrate freely our forecasts into any website/service/application.<br>
+                    You can <a style="cursor:pointer" onclick="switchMode('api');">get a key</a> by providing an email address.<br>
+                    You are limited to 10 spots by key.
+                </p>
+
+                <h1>JSON format</h1>
+                    <div style="margin-left:20px">
+                        <h2>URL to use</h2>
+
+                        <div style="margin-left:10px">
+                            <div class="popupApiUrl inset">
+                                <a href="https://api.paraglidable.com/?key=YOUR_KEY&format=JSON" target="_blank"><span style="font-size:13px;color:#000000">https://api.paraglidable.com/?key=<span class="textHighlight">YOUR_KEY</span>&format=<span class="textHighlight">JSON</span></span></a>
+                            </div>
+                        </div>
+                        
+                        <h2>Result example</h2>
+                        
+                        <div style="margin-left:10px">
+                            <div id="apiJsonExample" class="popupPreformatedDiv"></div>
+                        </div>
+                    </div>
+
+                <br>
+                <h1>XML format</h1>
+                    <div style="margin-left:20px">
+                        <h2>URL to use</h2>
+
+                        <div style="margin-left:10px">
+                            <div class="popupApiUrl inset">
+                                <a href="https://api.paraglidable.com/?key=YOUR_KEY&format=XML" target="_blank"><span style="font-size:13px;color:#000000">https://api.paraglidable.com/?key=<span class="textHighlight">YOUR_KEY</span>&format=<span class="textHighlight">XML</span></span></a>
+                            </div>
+                        </div>
+                        
+                        <h2>Result example</h2>
+                        
+                        <div style="margin-left:10px">
+                            <div id="apiXmlExample" class="popupPreformatedDiv"></div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="newPopupLinks" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">Links</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+
+                <h1>Paraglidable API uses</h1>
+
+
+                <div style="padding-left:15px">
+                    <ul>
+                        <li><a target="_blank" href="https://paraddicted.net/">paraddicted</a></li>
+                        <li><a target="_blank" href="https://www.mr-airspaces.cloud">Mr. Airspaces - Telegram bot</a></li>
+                        <li><a target="_blank" href="https://dbrgn.ch/meteo/">1337 Meteo</a></li>
+                    </ul>
+                </div>
+
+                
+                <h1>Other websites to know if it's paraglidable</h1>
+
+                <div style="padding-left:15px">
+                    <h2>Forecasts</h2>
+
+                    <ul>
+                        <li><a target="_blank" href="https://meteo-parapente.com">meteo-parapente.com</a></li>
+                        <li><a target="_blank" href="http://www.meteociel.fr">meteociel.fr</a></li>
+                        <li><a target="_blank" href="https://www.meteoblue.com">meteoblue.com</a></li>
+                    </ul>
+
+                    <h2>Real-time</h2>
+
+                    <ul>
+                        <li><a target="_blank" href="https://www.spotair.mobi/">SpotAiR</a></li>
+                    </ul>
+                </div>
+
+                <h1>Projects I like</h1>
+
+                <div style="padding-left:15px">
+                    <ul>
+                        <li><a target="_blank" href="https://thermal.kk7.ch/">Paragliding Thermal Maps</a></li>
+                        <li><a target="_blank" href="http://www.leonardoxc.net/">Leonardo XC</a></li>
+                        <li><a target="_blank" href="http://www.parange.ch/">Hike & Fly Planer</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="newPopupHowDoesItWork" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">How does it work?</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+
+        <p>
+            Paraglidable.com uses <a href="https://en.wikipedia.org/wiki/Deep_learning" target="_blank">deep learning</a> to analyse standard weather models forecasts.
+        </p>
+        <h1>Offline training</h1>
+        <p>
+            Paraglidable.com uses an artifical neural network to compute "flyability" and "crossability" scores by analysing ~200 weather parameters for each day.<br>
+            The neural network is trained over ground truth data spanning the last 10 years.<br>
+            The ground truth data is composed of weather archives and available online flights databases (~2 000 000 flights).<br>
+            During training, the neural network learns the correlation between weather conditions and reported flights (their number, distance, max vario, max altitude...).<br>
+            Correlation results can be visualised <span class="textHighlight" style="cursor:pointer" onclick="switchMode('analysis');">here</span>.<br>
+            <div style="width:100%; text-align:center">
+                <div style="display: inline-block; position:relative; width:300px; height: 150px">
+                    <div style="position: absolute; left:50px; top: 10px; text-align: center; width: 50px">
+                        <img style="position: absolute; left:0px; top: 0px; opacity: 0.2" src="imgs/icons/database.svg" alt="" width="50">
+                        <img style="padding-top: 8px"                                     src="imgs/icons/weather.svg"  alt="" width="32">
+                    </div>
+
+                    <div style="position: absolute; left:50px; top: 90px; text-align: center; width: 50px">
+                        <img style="position: absolute; left:0px; top: 0px; opacity: 0.2" src="imgs/icons/database.svg"    alt="" width="50">
+                        <img style="padding-top: 11px"                                    src="imgs/icons/paraglider2.svg" alt="" width="32">
+                    </div>
+                    <img style="position: absolute; left:140px; top: 59px" src="imgs/icons/gears.svg" alt="" width="32">
+                    <img style="position: absolute; left:230px; top: 59px" src="imgs/icons/neuralNetwork.svg" alt="" width="32">
+                    <img style="position: absolute; left:103px; top: 45px; transform: rotate(105deg);" src="imgs/icons/arrow-in.svg" alt="" width="32">
+                    <img style="position: absolute; left:103px; top: 75px; transform: rotate(75deg);" src="imgs/icons/arrow-in.svg" alt="" width="32">
+                    <img style="position: absolute; left:178px; top: 53px; transform: rotate(90deg);" src="imgs/icons/arrow-out.svg" alt="" width="44">
+                </div>
+            </div>
+        </p>
+        <h1>Online prediction</h1>
+        <p>
+            For computing forecast, paraglidable.com downloads the last weather forecasts from multiple sources to feed the neural network.
+            The neural network outputs a prediction of the flying condition.
+            <div style="width:100%; text-align:center">
+                <div style="display: inline-block; position:relative; width:300px; height: 70px">
+                    <img style="position: absolute; left:50px; top: 20px" src="imgs/icons/weather.svg" alt=""  width="40">
+                    <img style="position: absolute; left:140px; top: 20px" src="imgs/icons/neuralNetwork.svg" alt="" width="40">
+                    <div style="position: absolute; left:234px; top: 22px">
+                        <img style="position: absolute; left:0px; top: 0px" src="imgs/icons/gauge-nocolor.svg" alt="" width="40">
+                    </div>
+                    <img style="position: absolute; left:92px; top: 21px; transform: rotate(90deg);" src="imgs/icons/arrow-in.svg" alt="" width="40">
+                    <img style="position: absolute; left:184px; top: 19px; transform: rotate(90deg);" src="imgs/icons/arrow-out.svg" alt="" width="44">
+                </div>
+            </div>
+        </p>
+        <h1>Data sources</h1>
+        <p>
+            <div style="position:relative; width:300px; height: 150px">
+                <div style="position: absolute; left:50px; top: 10px; text-align: center; width: 50px">
+                    <img style="position: absolute; left:0px; top: 0px; opacity: 0.2" src="imgs/icons/database.svg" alt="" width="50">
+                    <img style="padding-top: 8px" src="imgs/icons/weather.svg" alt="" width="32">
+                </div>
+                <div style="position: absolute; left:120px; top: 20px; width: 250px">
+                    <!--
+                    <a target="_blank" href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs">GFS</a>, 
+                    -->
+                    <a target="_blank" href="https://www.ncdc.noaa.gov">NOAA</a>,
+                    <a target="_blank" href="https://www.ecmwf.int">ECMWF</a>, 
+                    <a target="_blank" href="http://www.meteofrance.com">Météo France</a>
+                </div>
+                <div style="position: absolute; left:50px; top: 70px; text-align: center; width: 50px">
+                    <img style="position: absolute; left:0px; top: 0px; opacity: 0.2" src="imgs/icons/database.svg" alt="" width="50">
+                    <img style="padding-top: 11px" src="imgs/icons/paraglider2.svg" alt=""  width="32">
+                </div>
+                <div style="position: absolute; left:120px; top: 80px; width: 250px">
+                    <a target="_blank" href="http://www.paraglidingforum.com/leonardo">Paragliding Forum</a>, 
+                    <a target="_blank" href="https://www.xcontest.org">XContest</a>, 
+                    <a target="_blank" href="https://www.dhv-xc.de">DHV-XC</a>, 
+                    <a target="_blank" href="https://parapente.ffvl.fr/cfd">CFD</a>,
+                    <a target="_blank" href="http://www.xcleague.com">XC League</a>
+                </div>
+            </div>
+        </p>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        if (getQueryVariable('forceDesktopMode') == '1' || getCookie('forceDesktopMode') == '1')
+        {
+            $('html > head').append($('<style>#popupMobileVersion {display:none;}</style>'));
+            setCookie('forceDesktopMode', '1');
+        }
+
+        function stopAskingMobileVersion()
+        {
+            setCookie('forceDesktopMode', '1');
+            $('#popupMobileVersion').css('display','none');
+        }
+    </script>
+    
+
+    <div id="popupMobileVersion" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">Switch to the mobile version?</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent" id="popupMobileVersionContent">
+
+                <div style="display:flex; flex-direction: column; padding-top: 50px">
+                    <div style="flex:1;text-align: center;">
+                        <img height="80" src="imgs/icons/smartphone-black.svg" alt=""/>
+                    </div>
+                    <div style="flex:1; padding-top: 55px; padding-bottom: 60px; text-align: center;">
+                        Switch to the mobile version?
+                    </div>
+                    <div style="flex: 1; display:flex; flex-direction: row;">
+                        <div style="width:40px"></div>
+                        <div class="modalButtonYes" onclick="location.href='mobile.html';">YES</div>
+                        <div style="width:40px"></div>
+                        <div class="modalButtonNo" onclick="$('#popupMobileVersion').css('display', 'none');">NO</div>
+                        <div style="width:40px"></div>
+                    </div>
+                </div>
+
+                <div style="width:100%;text-align:right;padding-top:35px">
+                <a onclick="stopAskingMobileVersion();" style="margin-left:auto; font-size:smaller;">never</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="newPopupContact" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">Contact</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+                <!-- -------------------------------------------------------------- -->
+                <div id="fb-root"></div>
+                <script>(function(d, s, id) {
+                  var js, fjs = d.getElementsByTagName(s)[0];
+                  if (d.getElementById(id)) return;
+                  js = d.createElement(s); js.id = id;
+                  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
+                  fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));</script>
+                <!-- -------------------------------------------------------------- -->
+
+
+                <h1>Facebook</h1>
+                <div class="contactParagraphContainer">
+                        <div style="width: 100%; display:flex">
+                            <div style="flex:1">
+                                <div style="margin-left: 10px">
+                                    <div class="fb-page" data-href="https://www.facebook.com/paraglidable/" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/paraglidable/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/paraglidable/">Paraglidable</a></blockquote></div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                <h1>Direct message</h1>
+                <div class="contactParagraphContainer">
+                    <div class="contactParagraph">
+                        <div style="width: 100%; display:flex;">
+                            <div style="padding:0px 5px;flex:1;font-weight: bold">Your name</div>
+                            <div style="padding:0px 5px;flex:1;font-weight: bold">Your e-mail (facultative)</div>
+                        </div>
+                        <div style="width: 100%; display:flex;">
+                            <div style="padding:5px;flex:1"><input id="message-name" type="text" style="width:100%" placeholder="Name"></div>
+                            <div style="padding:5px;flex:1"><input id="message-email" type="text" style="width:100%" placeholder="E-mail"></div>
+                        </div>
+                        <div style="width: 100%;">
+                            <div style="padding:0px 5px;flex:1;font-weight: bold">Your message</div>
+                            <div style="padding:5px;"><textarea id="message-text" style="width:100%; height:60px" placeholder="Message"></textarea></div>
+                        </div>
+                        <div style="width: 100%; display:flex;">
+                            <div style="padding-left:5px;flex:1"><input id="send-message" style="width:100%;" type="button" value="send"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h1>E-mail</h1>
+                <div class="contactParagraphContainer">
+                    <div class="contactParagraph">
+                        <div style="margin-left: 10px">
+                            <span>antoine</span><span id="at"></span><span>paraglidable.com</span>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#at").html("@");
+
+        $('#send-message').click(function(){
+
+            var message_name  = $("#message-name").val();
+            var message_email = $("#message-email").val();
+            var message_text  = $("#message-text").val();
+            
+            $.post(
+                '/apps/sendMessage.php',
+                {
+                    name:  message_name,
+                    email: message_email,
+                    text:  message_text
+                },
+
+                function(data) {
+                    if(data == '1')
+                    {
+                        $("#send-message").val("✓");
+                    }
+                    else
+                    {
+                        $("#send-message").val("Sorry there was en error, your e-mail could not be sent.");
+                    }
+                },
+
+                'text'
+            );
+        });
+    </script>
+
+
+    <div id="newPopupCredits" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">Credits</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+
+                <h1>Data sources</h1>
+
+                <div style="padding-left:15px">
+
+                    <h2>Weather</h2>
+                    <ul>
+                        <!--
+                        <li><a target="_blank" href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs">GFS</a></li>
+                        -->
+                        <li><a target="_blank" href="https://www.ecmwf.int">ECMWF</a></li>
+                        <li><a target="_blank" href="http://www.meteofrance.com">Météo France</a></li>
+                        <li><a target="_blank" href="https://www.ncdc.noaa.gov">NOAA</a></li>
+                    </ul>
+
+                    <h2>Flights</h2>
+                    <ul>
+                        <li><a target="_blank" href="http://www.paraglidingforum.com/leonardo">Paragliding Forum</a></li>
+                        <li><a target="_blank" href="https://www.xcontest.org">XContest</a></li>
+                        <li><a target="_blank" href="https://www.dhv-xc.de">DHV-XC</a></li>
+                        <li><a target="_blank" href="https://parapente.ffvl.fr/cfd">CFD</a> </li>
+                        <li><a target="_blank" href="http://www.xcleague.com">XC League</a></li>
+                    </ul>
+
+                    <h2>Map tiles</h2>
+                    <ul>
+                        <li>Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>, under <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_blank" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_blank" href="http://www.openstreetmap.org/copyright">ODbL</a>.</li>
+                    </ul>
+
+                    <h2>Geography</h2>
+
+                    <ul>
+                        <li><a target="_blank" href="https://www.naturalearthdata.com">Natural Earth</a></li>
+                        <li><a target="_blank" href="https://github.com/simonepri/geo-maps">Geo-Maps</a></li>
+                    </ul>
+
+
+                    <h2>Flying spots</h2>
+                    <ul>
+                        <li><a target="_blank" href="http://www.paraglidingspots.com">paraglidingspots.com</a></li>
+                    </ul>
+
+                </div>
+
+
+                <h1>Images</h1>
+
+                <ul>
+<!-- copyright, search, mobile, about, info, target, GPS, android, desktop, arrows, key, API, remove, email, email-send -->
+                    <li>Icons made by <a target="_blank" href="https://www.freepik.com" title="Freepik">Freepik</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+<!-- mobile web -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+<!-- science -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+
+<!-- prev/next -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+
+<!-- side results -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+
+<!-- buy -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon" target="_blank">www.flaticon.com</a> is licensed by <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+
+<!-- Facebook logo -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/simpleicon" title="SimpleIcon">SimpleIcon</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+   
+<!-- Link -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/creaticca-creative-agency" title="Creaticca Creative Agency">Creaticca Creative Agency</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+
+<!-- Settings -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+
+<!-- Layers -->
+                    <li>Icons made by <a target="_blank" href="https://www.flaticon.com/authors/cole-bemis" title="Cole Bemis">Cole Bemis</a> from <a target="_blank" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></li>
+                </ul>
+
+                <h1>Libraries</h1>
+
+                <div style="padding-left:15px">
+
+                    <h2>C++</h2>
+                    <ul>
+                        <li><a target="_blank" href="https://www.qt.io/">Qt</a></li>
+                    </ul>
+
+                    <h2>Python</h2>
+                    <ul>
+                        <li><a target="_blank" href="https://www.tensorflow.org/">TensorFlow</a></li>
+                        <li><a target="_blank" href="https://keras.io/">Keras</a></li>
+                        <li><a target="_blank" href="http://www.numpy.org/">NumPy</a></li>
+                        <li><a target="_blank" href="https://jswhit.github.io/pygrib">pygrib</a></li>
+                    </ul>
+
+                    <h2>Javascript</h2>
+                    <ul>
+                        <li><a target="_blank" href="https://leafletjs.com">Leaflet</a></li>
+                        <li><a target="_blank" href="http://osmnames.org">OSM Names</a></li>
+                        <li><a target="_blank" href="https://jquery.com">jQuery</a></li>
+                        <li><a target="_blank" href="https://momentjs.com">Moment.js</a></li>
+                        <li><a target="_blank" href="https://sentry.io/for/javascript">Sentry</a></li>
+                        <li><a target="_blank" href="https://prismjs.com">Prism</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function switchNavigationBar(id)
+    {
+        if ($("#"+id).css('visibility') == "hidden")
+        {
+            $(".navigationBar").css('visibility', 'hidden');
+            $("#"+id).css('visibility', 'visible');
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    function hideShowLegend(show, showFlights=false, disabled=false)
+    {
+        if (show)
+        {
+            $("#legend").css("visibility", "visible");
+
+            if (showFlights)
+                $("#legendFlights").css("display", "");
+            else
+                $("#legendFlights").css("display", "none");
+
+            if (disabled)
+            {
+                hideLegendValues();
+                hideKeywords();
+            }
+        }
+        else
+        {
+            $("#legend").css("visibility", "hidden");
+            hideLegendValues();
+            hideKeywords();
+        }
+    }
+
+    function applyShowHideMapColors(show)
+    {
+        if (show)
+        {
+            $(".basetiles").css("-webkit-filter", "grayscale(100%)");
+            $(".basetiles").css("filter", "grayscale(100%)");
+
+            // my tiles
+            $(".mytiles-main").css("visibility", "visible");
+        }
+        else
+        {
+            $(".basetiles").css("-webkit-filter", "grayscale(0%)");
+            $(".basetiles").css("filter", "grayscale(0%)");
+
+            // my tiles
+            $(".mytiles-main").css("visibility", "hidden");
+        }
+    }
+
+    function applyShowHideSpots(show)
+    {
+        if (g_spotsLayer != null)
+        {
+            if (!show)
+            {
+                if (map.hasLayer(g_spotsLayer))
+                    map.removeLayer(g_spotsLayer);
+            }
+            else
+            {
+                if (!map.hasLayer(g_spotsLayer))
+                    g_spotsLayer.addTo(map);
+            }
+        }
+    }
+
+    function switchMode(strMode)
+    {
+        idsNavigationBar = { 'main':     'mainNavigationBar',
+                             'api':      'apiNavigationBar',
+                             'analysis': 'analysisNavigationBar' };
+
+        if (strMode == 'main' || strMode == 'api' || strMode == 'analysis')
+        {
+            if ( (strMode != 'main' && switchNavigationBar(idsNavigationBar[strMode])) )
+            {
+                g_mode = strMode;
+            }
+            else
+            {
+                switchNavigationBar(idsNavigationBar['main']);
+                g_mode = 'main';
+            }
+
+            // tiles
+
+            if (g_mode == 'api' || showHideColorsVal == 0)
+            {
+                applyShowHideMapColors(false);
+            }
+            else
+            {
+                applyShowHideMapColors(true);
+            }
+
+            // legend
+
+            hideShowLegend(g_mode=='main' || g_mode=='analysis', g_mode=='analysis', g_mode=='analysis');
+
+            // maxNativeZoom
+
+            if (g_mode == 'analysis')
+            {
+                var maxAnlLevel = 6;
+                paraglidableTiles.options.maxNativeZoom = L.Browser.retina ? maxAnlLevel-1 : maxAnlLevel;
+                map.setZoom(L.Browser.retina ? maxAnlLevel-1 : maxAnlLevel);
+            }
+            else
+            {
+                paraglidableTiles.options.maxNativeZoom = g_switchZoom-1;
+            }
+
+            // prevNextDayContainer
+
+            if (g_mode == 'main' || g_mode == 'analysis')
+            {
+                $("#prevNextDayContainer").css("visibility", "visible");
+                updatePrevNextButtons();
+            }
+            else
+            {
+                $("#prevNextDayContainer").css("visibility", "hidden");
+            }
+
+            // API markers
+
+            if (g_mode != 'api')
+                removeAllApiMarkers();
+
+            // Calendar
+
+            if (g_mode == 'analysis')
+                fillAnlDatepickerIfNeeded();
+
+            // date
+
+            if (g_mode == 'analysis')
+            {
+                changeDate('2013-04-07');
+            }
+            else if (g_mode == 'main')
+            {
+                changeDate(moment().format("YYYY-MM-DD"));
+            }
+        }
+    }
+</script>
+
+<script src="js/third_parties/prism/prism.js"></script>
+<script>
+        $.ajax({
+            type:     "GET",
+            url:      "/apps/api/get.php?key=be7b42f272ba686a&format=JSON&htmlentities=1",
+            dataType: "text",
+            success: function(data)    {
+                                            $("#apiJsonExample").html('<pre><code class="language-json" id="code-JSON">'+ data +'</code></pre>');
+                                            Prism.highlightElement($('#code-JSON')[0]);
+                                       },
+            error:   function (result) {}
+        });
+        $.ajax({
+            type:     "GET",
+            url:      "/apps/api/get.php?key=be7b42f272ba686a&format=XML&htmlentities=1",
+            dataType: "text",
+            success: function(data)    {
+                                            $("#apiXmlExample").html('<pre><code class="language-markup" id="code-XML">'+ data +'</code></pre>');
+                                            Prism.highlightElement($('#code-XML')[0]);
+                                       },
+            error:   function (result) {}
+        });
+</script>
+
+
+
+
+
+<script>
+if (getQueryVariable('mode') == 'analysis')
+{
+    changeDate(moment().format("YYYY-MM-DD"));
+    switchMode('analysis');
+}
+else
+{
+    if (isSelectableDate(inputDay))
+    {
+        changeDate(inputDay);
+    }
+    else
+    {
+        // Default date = today
+        changeDate(moment().format("YYYY-MM-DD"));
+    }
+}
+</script>
+
+
+<!-- ============================ Analysis ================================== -->
+<!--
+<script>
+
+function valToColorLst(val, vals, colors)
+{
+    if (val < vals[0])
+        val = vals[0];
+    if (val > vals[vals.length-1])
+        val = vals[vals.length-1];
+
+    for (v=0; v<vals.length-1; v++)
+    {
+        if (val <= vals[v+1])
+        {
+            var colorR = [parseInt(colors[v].substring(0,2), 16), parseInt(colors[v+1].substring(0,2), 16)];
+            var colorG = [parseInt(colors[v].substring(2,4), 16), parseInt(colors[v+1].substring(2,4), 16)];
+            var colorB = [parseInt(colors[v].substring(4,6), 16), parseInt(colors[v+1].substring(4,6), 16)];
+
+            var interp = (val - vals[v])/(vals[v+1] - vals[v]);
+            var colorRint = interp*(colorR[1]-colorR[0]) + colorR[0];
+            var colorGint = interp*(colorG[1]-colorG[0]) + colorG[0];
+            var colorBint = interp*(colorB[1]-colorB[0]) + colorB[0];
+
+            return [ Math.floor(0.5+colorRint),
+                     Math.floor(0.5+colorGint),
+                     Math.floor(0.5+colorBint) ];
+        }
+    }
+
+    return [0,0,0];
+}
+
+function flyabilityColor(val)
+{
+    color = valToColorLst(val, [0.0,0.5,1.0], ["A00000", "A07000", "00A000"]);
+    return "#"+ ("00" + color[0].toString(16)).substr(-2) +
+                ("00" + color[1].toString(16)).substr(-2) +
+                ("00" + color[2].toString(16)).substr(-2);
+}
+
+function makeSvg(width, height, svg)
+{
+    let encapsulatedSvg = '<svg width="'+ width +'" height="'+ height +'" xmlns="http://www.w3.org/2000/svg"><metadata id="metadata1">image/svg+xml</metadata>'+ svg +'</svg>';
+    let svgUrl = encodeURI("data:image/svg+xml," + encapsulatedSvg).replace('#','%23');
+    return svgUrl;
+}
+
+function computeHistogram(vals, nbBins, minVal, maxVal)
+{
+    var histo = Array(nbBins);
+    var maxNb = 0;
+    histo.fill(0);
+
+    // fill
+    for (v=0; v<vals.length; v++)
+    {
+        var b = 0;
+        if (vals[v] <= minVal) {
+            b = 0;
+        }
+        else if (vals[v] >= maxVal) {
+            b = nbBins-1;
+        }
+        else {
+            b = Math.floor((vals[v]-minVal)/(maxVal-minVal) * nbBins);
+        }
+        histo[b]++;
+        if (histo[b] > maxNb)
+            maxNb = histo[b];
+    }
+
+    return histo;
+}
+
+function drawAnalysisData(content)
+{
+    const resolution = 1.0;
+    //console.log(content);
+    var arContent = content.split("\n");
+    var obj = JSON.parse(arContent[0]);
+    var flightsContent = arContent.slice(1);
+
+    console.log(obj);
+    console.log(flightsContent);
+
+    for (f=0; f<flightsContent.length; f++)
+    {
+        arFlight = flightsContent[f].split(",");
+        flightsContent[f] = [parseFloat(arFlight[0]), parseFloat(arFlight[1]), parseFloat(arFlight[2])];
+    }
+
+    console.log(flightsContent);
+
+    dataListTxt = [];
+    dataListBgC = [];
+    dataListBg0 = [];
+
+    arLvl = [1000, 900, 800, 700, 600];
+
+    console.log("obj.analysis.length", obj.analysis.length);
+
+    for (cell=0; cell<obj.analysis.length; cell++)
+    {
+        const kFlyability  = 5;
+        const lvlOfBgColor = 1;
+        const lat = obj.analysis[cell].coords.lat;
+        const lon = obj.analysis[cell].coords.lon;
+
+        if (lon < 5.0 || lon > 18.0 || lat < 43.0 || lat > 49.0)
+            continue;
+
+
+        flightsContentThisCell = [];
+        for (f=0; f<flightsContent.length; f++)
+        {
+            if (Math.abs(lat-flightsContent[f][0]) < resolution/2.0 && Math.abs(lon-flightsContent[f][1]) < resolution/2.0)
+                flightsContentThisCell.push(flightsContent[f]);
+        }
+
+        var textLineHeight = 7;
+        var svg  = '';
+
+        
+        // https://gist.github.com/clhenrick/6791bb9040a174cd93573f85028e97af
+
+        //-------------------------------------------------------------------------
+        // FLIGHTS
+        //-------------------------------------------------------------------------
+
+        var flightsYPos = 10;
+        svg += '<text x="10" y="'+ flightsYPos +'" fill="black" font-family="Verdana" font-size="5" font-weight="bold">Flights:</text>';
+        svg += '<text x="32" y="'+ flightsYPos +'" fill="black" font-family="Verdana" font-size="5">'+ flightsContentThisCell.length +'</text>';
+
+        // circles
+        for (f=0; f<flightsContentThisCell.length; f++)
+        {
+            dataListBg0.push(L.circle([flightsContentThisCell[f][0], flightsContentThisCell[f][1]], {
+                                                                        radius: 2500.0,
+                                                                        fillColor: 'white',
+                                                                        fillOpacity: 1.0,
+                                                                        weight: 1}));
+        }
+
+        // histogram
+        var maxBinHeight = 20;
+        var histoYPos = flightsYPos + 8;
+        var binWidth  = 5;
+        var maxPts    = 80;
+        var nbBinsPts = 10;
+        var histoXPos = (70 - nbBinsPts*binWidth)*0.5;
+
+        var pts = [];
+        for (f=0; f<flightsContentThisCell.length; f++)
+        {
+            pts.push(flightsContentThisCell[f][2]);
+        }
+
+        console.log("pts", pts);
+
+        var histo = computeHistogram(pts, nbBinsPts, 0, maxPts);
+        var maxBinValue = 15.0;
+        for (b=0; b<nbBinsPts; b++)
+        {
+            var x = histoXPos + b*binWidth;
+            var height = Math.min(maxBinValue, histo[b])/maxBinValue*maxBinHeight
+            svg += '<rect x="'+ x +'" y="'+ (histoYPos+maxBinHeight-height) +'" width="'+ binWidth +'" height="'+ height +'" style="fill:rgba(0,0,0);stroke:rgb(0,0,0);stroke-width:0.5;fill-opacity:0.5" />';
+        }
+        // arrows
+        svg += '<line x1="'+ (histoXPos) +'" y1="'+ (histoYPos+maxBinHeight) +'" x2="'+ (histoXPos+(nbBinsPts+0.5)*binWidth) +'" y2="'+ (histoYPos+maxBinHeight) +'" style="stroke:rgb(0,0,0);stroke-width:1" />';
+        svg += '<line x1="'+ (histoXPos) +'" y1="'+ (histoYPos+maxBinHeight) +'" x2="'+ (histoXPos) +'" y2="'+ (histoYPos-0.5*binWidth) +'" style="stroke:rgb(0,0,0);stroke-width:1" />';
+
+        //-------------------------------------------------------------------------
+        // PREDICTIONS
+        //-------------------------------------------------------------------------
+
+        var predictionYPos = 85;
+        svg += '<text x="'+ 10  +'" y="'+ (predictionYPos-5*7) +'" font-weight="bold" fill="black" font-family="Verdana" font-size="5">Flyability:</text>';
+
+        // flyability at each level
+        for (lvl=0; lvl<arLvl.length; lvl++)
+        {
+            var xPos = 10;
+            var xPos2 = xPos+23.5;
+
+            if (arLvl[lvl] < 1000)
+                xPos += 3.19;
+
+            svg += '<text x="'+ xPos  +'" y="'+ (predictionYPos-lvl*7) +'" fill="black" font-family="Verdana" font-size="5">'+ arLvl[lvl] +' hPa</text>';
+            svg += '<text x="'+ xPos2 +'" y="'+ (predictionYPos-lvl*7) +'" fill="black" font-family="Verdana" font-size="5">: '+ Math.round(100.0*obj.analysis[cell].predictions[kFlyability+lvl]) +'%</text>';
+        }
+
+        // crossability
+        svg += '<text x="'+ 10 +'" y="'+ (predictionYPos+1*7) +'" fill="black" font-family="Verdana" font-size="5" font-weight="bold">Crossability:</text>';
+        svg += '<text x="'+ 46 +'" y="'+ (predictionYPos+1*7) +'" fill="black" font-family="Verdana" font-size="5">'+ Math.round(100.0*obj.analysis[cell].predictions[kFlyability+6]) +'%</text>';
+
+        var bounds = L.latLngBounds([   [obj.analysis[cell].coords.lat-resolution/2.0, obj.analysis[cell].coords.lon-resolution/2.0],
+                                        [obj.analysis[cell].coords.lat+resolution/2.0, obj.analysis[cell].coords.lon+resolution/2.0]  ]);
+
+        //console.log(obj.analysis[cell].coords.lat, obj.analysis[cell].coords.lon);
+
+        dataListBgC.push(L.rectangle(bounds, {  fillColor: flyabilityColor(obj.analysis[cell].predictions[kFlyability+lvlOfBgColor]),
+                                                fillOpacity: 0.63,
+                                                weight: 1,
+                                                color: 'black'}).on('mouseover', function (e) {
+
+            // TODO
+            // TODO
+            // TODO
+            // TODO
+
+            // Dessiner les infos que sur le mouseover
+
+            $(".toto").attr("display", "none");
+            console.log('mouseover');
+
+            // TODO
+            // TODO
+            // TODO
+            // TODO
+        }));
+
+        //dataListTxt.push(L.imageOverlay('imgs/legend/fufuPattern.png', bounds, {}));
+
+        var svgImg = L.imageOverlay(makeSvg(70, 100, svg),  bounds, {});
+        //svgImg.getElement().classList.add('toto');
+        dataListTxt.push(svgImg);
+    }
+
+    // add to map
+    L.layerGroup(dataListBg0).addTo(map);
+    L.layerGroup(dataListBgC).addTo(map);
+    L.layerGroup(dataListTxt).addTo(map);
+
+    // put text on top
+    $('.leaflet-overlay-pane img').css('z-index', 300); // rectangle z-index is 200
+}
+
+function downloadAnalysisData(date)
+{
+        $.ajax({
+            type:     "GET",
+            url:      "/apps/api/getAnalysisData.php?date="+ date,
+            dataType: "text",
+            success: function(data)    {
+                                            drawAnalysisData(data);
+                                       },
+            error:   function (result) {}
+        });
+}
+
+//downloadAnalysisData("2018-01-01");
+
+//switchMode('api');
+
+</script>
+-->
+
+
+<!-- Color blind mode -->
+<script>
+function applyColorBlind(className)
+{
+    if (g_arrColorBlindAngles[colorBlindValue%g_arrColorBlindAngles.length] == 0)
+    {
+        $("."+className).css('filter', '');
+    }
+    else
+    {
+        $("."+className).css('filter', 'hue-rotate('+ (g_arrColorBlindAngles[colorBlindValue%g_arrColorBlindAngles.length]) +'deg)');
+    }
+}
+
+function updateColorBlindLinkText()
+{
+    var arrStrMode = ["off", "1/2", "2/2"];
+    $("#colorBlindModeStrValLink").html(arrStrMode[colorBlindValue%arrStrMode.length]);
+}
+
+function updateColorBlind()
+{
+    applyColorBlind("colorMap");
+    applyColorBlind("keywordVal");
+    updateColorBlindLinkText();
+    downloadSpotsPredictions();
+}
+
+function switchColorBlind()
+{
+    colorBlindValue++;
+    setCookie("colorBlindValue", colorBlindValue.toString());
+
+    updateColorBlind();
+}
+
+
+var cookieColorBlindValue = getCookie("colorBlindValue");
+if (cookieColorBlindValue != "")
+{
+    colorBlindValue = parseInt(cookieColorBlindValue);
+    updateColorBlind();
+}
+else
+{
+    updateColorBlindLinkText();
+}
+</script>
+
+
+<script>
+    function updateShowHideColors()
+    {
+        if (showHideColorsVal == 1)
+        {
+            applyShowHideMapColors(true);
+            $("#checkboxShowHideMapColors").css("background-image", "url('imgs/icons/check.svg')");
+        }
+        else
+        {
+            applyShowHideMapColors(false);
+            $("#checkboxShowHideMapColors").css("background-image", "none");
+        }
+    }
+
+    function updateShowHideSpots()
+    {
+        if (showHideSpotsVal == 1)
+        {
+            applyShowHideSpots(true);
+            $("#checkboxShowHideSpots").css("background-image", "url('imgs/icons/check.svg')");
+        }
+        else
+        {
+            applyShowHideSpots(false);
+            $("#checkboxShowHideSpots").css("background-image", "none");
+        }
+    }
+
+    function showHideColors() {
+        showHideColorsVal = (++showHideColorsVal)%2;
+        setCookie("showHideColorsVal", showHideColorsVal.toString());
+        updateShowHideColors();
+    }
+
+    function showHideSpots()
+    {
+        showHideSpotsVal = (++showHideSpotsVal)%2;
+        setCookie("showHideSpotsVal", showHideSpotsVal.toString());
+        updateShowHideSpots();
+    }
+
+    var cookieShowHideColorsVal = getCookie("showHideColorsVal");
+    if (cookieShowHideColorsVal != "")
+    {
+        showHideColorsVal = parseInt(cookieShowHideColorsVal);
+        updateShowHideColors();
+    }
+    else
+    {
+        $("#checkboxShowHideMapColors").css("background-image", "url('imgs/icons/check.svg')");
+    }
+
+
+    var cookieShowHideSpotsVal = getCookie("showHideSpotsVal");
+    if (cookieShowHideSpotsVal != "")
+    {
+        showHideSpotsVal = parseInt(cookieShowHideSpotsVal);
+        updateShowHideSpots();
+    }
+    else
+    {
+        $("#checkboxShowHideSpots").css("background-image", "url('imgs/icons/check.svg')");
+    }
+
+
+    function switchLayersVisibility(layer)
+    {
+        if (layer==0)
+        {
+            showHideColors();
+        }
+        else if (layer==1)
+        {
+            showHideSpots();
+        }
+    }
+</script>
+
+<script>
+    setCookie("mobileVersion", "0");
+</script>
+
+
+
+
+<script>
+if (false)
+{
+    $.getJSON("cells.json", function(data){loadTmp(data)});
+
+    function loadTmp(decodedJson)
+    {
+        cellsLayer = L.geoJson(decodedJson, {   style: function(feature)
+                                                {
+                                                    var minWindCoef = 0.7;
+                                                    var maxWindCoef = 1.0;
+                                                    var windCoefVal = (feature.properties.windCoef - minWindCoef) / (maxWindCoef - minWindCoef);
+                                                    return {"fillOpacity": 0.5, fillColor: flyabilityColor(windCoefVal), color:'#000', weight:1};
+                                                } });
+        cellsLayer.addTo(map);
+    }
+}
+
+// get current git comit
+$.ajax({
+	type:     "GET",
+	url:      "data/commit.txt",
+	dataType: "text",
+	success: function(commit)   {
+									$("div#version").html('<a target="_blank" href="https://github.com/AntoineMeler/Paraglidable/tree/'+ commit +'">commit '+ commit.substring(0,8) +"</a>");
+								}
+});
+</script>
+
+</body>
+</html>

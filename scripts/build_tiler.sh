@@ -1,0 +1,1 @@
+cd ../tiler/Tiler/; sh build.sh

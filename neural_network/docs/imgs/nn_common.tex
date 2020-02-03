@@ -1,0 +1,181 @@
+
+\definecolor{date}          {rgb}{0.5, 0.5, 0.5}
+\definecolor{dow}           {rgb}{0.5, 0.5, 0.5}
+\definecolor{mountainess}   {rgb}{0.5, 0.5, 0.5}
+\definecolor{windcolor}     {rgb}{0.5, 0.5, 1.0}
+\definecolor{windpredcolor} {rgb}{0.5, 0.5, 0.75}
+\definecolor{other}         {rgb}{1.0, 0.4, 0.4}
+\definecolor{humidity}      {rgb}{0.0, 0.6, 0.0}
+\definecolor{flyability}    {rgb}{0.2, 0.7, 0.7}
+\definecolor{xccolor}       {rgb}{0.7, 0.7, 0.0}
+\definecolor{flyabilitypopu}{rgb}{0.1, 0.5, 0.5}
+\definecolor{xccolorpopu}   {rgb}{0.5, 0.5, 0.0}
+\definecolor{varcolor}      {rgb}{1.0, 1.0, 1.0}
+\definecolor{blocvarcolor}  {rgb}{0.0, 0.0, 0.0}
+
+
+\newcommand{\tensorlabel}[1]{
+	\scalebox{1.5}{\textbf{#1}}
+}
+
+%#1: optional. Default: fill=white
+%#2: origin
+%#3: size: cubex=cubey=cubez (it's a cube)
+\newcommand{\cube}[3][fill=white]{
+    \draw[black,                 #1] (#2) -- ++(-#3, 0, 0) -- ++(0, #3,  0) -- ++(0,0,-#3) -- ++(#3,0,0) -- ++(0,-#3,0)-- cycle;
+    \draw[black,line join=bevel, #1] (#2) -- ++(  0,#3, 0) -- ++(0,  0,-#3) (#2)++(0,#3,0)--++(-#3,0,0);
+}
+\newcommand{\tensornoscope}[5]{
+	\foreach \x in {1,...,#3}
+	{
+		\foreach \y in {1,...,#4}
+		{
+			\foreach \z in {-#5,...,-1}
+			{
+				\ifthenelse{\x>1 \OR \z<-1}{
+					\cube[#1]{0.5*\x,0.5*\y,0.5*\z}{0.5}
+				}{
+					\cube[#2]{0.5*\x,0.5*\y,0.5*\z}{0.5}
+				}
+			}
+		}
+	}
+}
+\newcommand{\tensorallaltsnoscope}[5]{
+	\foreach \x in {1,...,#3}
+	{
+		\foreach \y in {1,...,#4}
+		{
+			\foreach \z in {-#5,...,-1}
+			{
+				\ifthenelse{\x>1}{
+					\cube[#1]{0.5*\x,0.5*\y,0.5*\z}{0.5}
+				}{
+					\cube[#2]{0.5*\x,0.5*\y,0.5*\z}{0.5}
+				}
+			}
+		}
+	}
+}
+
+\newcommand{\tensorspotsnoscope}[3]{
+	\begin{scope}[xshift=1.25cm]
+	\foreach \x/\maxz in {1/6, 2/5, 3/4, 4/5, 5/3, 6/3, 7/2, 8/4, 9/5, 10/4}
+	{
+		\foreach \y in {1,...,#3}
+		{
+			\foreach \z in {1,...,\maxz}
+			{
+				\ifthenelse{\x>1 \OR \z<\maxz}{
+					\cube[#1]{0.5*\x,0.5*\y,0.5*\z}{0.5}
+				}{
+					\cube[#2]{0.5*\x,0.5*\y,0.5*\z}{0.5}
+				}
+			}
+		}
+	}
+	\end{scope}
+}
+
+\newcommand{\tensorwithlegendnoscope}[5]{
+	\tensornoscope{#1}{#2}{#3}{#4}{#5}
+	\draw[<->] (0.5-0.3, 2.5,  0.75    ) -- node[anchor= -45, rotate=45, outer sep=2pt] {\hspace{0.3cm} altitudes} (0.5-0.3, 2.5, -1.75    );
+	\draw[<->] (0.5,     2.5, -1.75-0.4) -- node[anchor=-90] {cells} (5.5,     2.5, -1.75-0.4);
+	\draw[<->] (5.5+0.2, 1.0, -1.75    ) -- node[anchor=-90, rotate=-90] {hours} (5.5+0.2, 2.5, -1.75    );
+}
+\newcommand{\tensorspotswithlegendnoscope}[3]{
+	\tensorspotsnoscope{#1}{#2}{#3}
+	\begin{scope}[xshift=1.25cm]
+	\draw[<->] (0.5-0.3, 2.5, 1.25) -- node[anchor= -45, rotate=45, outer sep=2pt] {\hspace{0.3cm} spots} (0.5-0.3, 2.5, 4.25);
+	\draw[<->] (0.5, 2.5, 1.25-0.3) -- node[anchor=-90] {cells}                                           (5.5, 2.5, 1.25-0.3);
+	\draw[<->] (5.5+0.2, 1.0, 1.25) -- node[anchor=-90, rotate=-90] {hours}                               (5.5+0.2, 2.5, 1.25);
+	\end{scope}
+}
+
+\newcommand{\tensorspotswithlegend}[3]{
+\begin{scope}[yshift=1.2cm] \tensorspotswithlegendnoscope{#1}{#2}{#3} \end{scope}
+}
+\newcommand{\tensorspots}[3]{
+\begin{scope}[yshift=1.2cm] \tensorspotsnoscope{#1}{#2}{#3} \end{scope}
+}
+
+\newcommand{\tensorwithlegend}[5]{
+\begin{scope}[yshift=0cm] \tensorwithlegendnoscope{#1}{#2}{#3}{#4}{#5} \end{scope}
+}
+\newcommand{\tensor}[5]{
+\begin{scope}[yshift=0cm] \tensornoscope{#1}{#2}{#3}{#4}{#5} \end{scope}
+}
+\newcommand{\tensorallalts}[5]{
+\begin{scope}[yshift=0cm] \tensorallaltsnoscope{#1}{#2}{#3}{#4}{#5} \end{scope}
+}
+
+
+\newcommand{\gridxscale}{12}
+\newcommand{\gridyscale}{5}
+
+\newenvironment{ingrid}[2]% environment name
+{% begin code
+	\begin{scope}[xshift=\gridxscale*#2 cm, yshift=-\gridyscale*#1 cm]
+}%
+{\end{scope}}% end code
+
+
+\newcommand{\arrowgrid}[4]{
+	\draw[->, line width=0.475cm, color=black!20!white] ($(\gridxscale*#2 cm, -\gridyscale*#1 cm)+(3cm, 2cm)$) -- ($(\gridxscale*#4 cm, -\gridyscale*#3 cm)+(3cm, 2cm)$);
+}
+
+
+
+\newcommand{\drawnn}{
+	\tikzstyle{neuron}=[draw=black!85,circle,fill=black!25,minimum size=20pt,inner sep=0pt, drop shadow=black!17]
+	\newcommand{\nnscale}{1.5}
+
+	\begin{scope}[xshift=-\nnscale*2.0 cm, yshift=-2cm]
+		\foreach \n in {0,...,4} {
+			\node[neuron] (NA-\n) at (\nnscale*\n, 0 cm) {};
+			\node[neuron] (NB-\n) at (\nnscale*\n, \nnscale cm) {};
+		}
+
+		\foreach \source in {0,...,4}
+			\foreach \dest in {0,...,4}
+				\draw[draw=black!75!white] (NA-\source) edge (NB-\dest);
+	\end{scope}
+}
+
+
+
+
+\newcommand{\inputwind}{
+	\node at (3.0,  2.5+0.35, -1.75) {\tensorlabel{\textcolor{windcolor}{wind (8)}}};
+	\tensorallalts{fill=windcolor}{fill=windcolor!75!black, thick}{10}{3}{5}
+}
+
+\newcommand{\inputhumidityother}{
+	\node at (2.5,  2.5+0.35, -1.75) {\tensorlabel{\textcolor{humidity}{humidity (2)}}};
+	\node at (3.7,  -0.15, -1.75) {\tensorlabel{\textcolor{other}{other (45)}}};
+	\begin{scope}[yshift=0.75cm]
+		\tensor{fill=humidity}{fill=humidity!75!black, thick}{10}{3}{1}
+	\end{scope}
+	\begin{scope}[xshift=0.85cm, yshift=0.25cm]
+		\tensor{fill=other}{fill=other!75!black, thick}{10}{3}{1}
+	\end{scope}
+}
+
+
+\newcommand{\inputdatedow}{
+	\begin{scope}[yshift=0.5cm]
+		\draw[draw=white, fill=white] (0, 0.55) rectangle (4.44cm, 2.5cm);
+		\begin{scope}[xshift=0cm,  yshift=1cm]
+			\node[anchor=180] at (1.1cm, 1cm) {\tensorlabel{\textcolor{date}{date}}};
+			\tensor{fill=date}{fill=date!75!black, thick}{1}{1}{1}
+		\end{scope}
+		\begin{scope}[xshift=0cm,  yshift=0cm]
+			\node[anchor=180] at (1.1cm, 1cm) {\tensorlabel{\textcolor{dow}{day\_of\_week}}};
+			\tensor{fill=dow}{fill=dow!75!black, thick}{1}{1}{1}
+		\end{scope}
+	\end{scope}
+}
+
+\newcommand{\blocktitle}[1]{
+	\scalebox{1.75}{\textbf{#1}}
+}

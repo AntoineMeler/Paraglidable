@@ -1,0 +1,23 @@
+\documentclass[tikz,border=2mm]{standalone} 
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+\usetikzlibrary{shadows.blur}
+\usepackage{ifthen}
+\usepackage{amsmath}
+
+\input{nn_common.tex}
+
+\begin{document}
+\fontfamily{phv}\selectfont
+\begin{tikzpicture}
+
+% Legend
+\begin{ingrid}{0}{0}
+	\tensorwithlegend{fill=black!10!white}{fill=black!10!white}{10}{3}{5}
+\end{ingrid}
+\begin{ingrid}{0}{1}
+	\tensorspotswithlegend{fill=black!10!white}{fill=black!10!white}{3}
+\end{ingrid}
+
+\end{tikzpicture}
+\end{document}

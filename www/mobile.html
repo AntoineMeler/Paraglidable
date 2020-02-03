@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script async src="/apps/gtag.php"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-127025208-1');
+    </script>
+    <meta charset="utf-8">
+
+    <meta name="description" content="Paraglidable: the simplest weather forecast website for paragliding">
+    <meta name="keywords" content="paraglidable, paragliding, weather, forecast">
+    <title>Paraglidable</title>
+
+    <meta property="og:title" content="paraglidable.com" />
+    <meta property="og:image" content="https://paraglidable.com/imgs/oc_image2.jpeg" />
+    <meta property="og:url" content="https://paraglidable.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="AI-based flying conditions forecast for paragliding" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="js/third_parties/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="css/paraglidable_mobile.css" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="imgs/favicon/favicon.ico">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="imgs/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="196x196" href="imgs/favicon/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="imgs/favicon/favicon-160.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="imgs/favicon/favicon-96.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="imgs/favicon/favicon-64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="imgs/favicon/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="imgs/favicon/favicon-16.png">
+    <link rel="apple-touch-icon" href="imgs/favicon/favicon-57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="imgs/favicon/favicon-114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="imgs/favicon/favicon-72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="imgs/favicon/favicon-144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="imgs/favicon/favicon-60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="imgs/favicon/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="imgs/favicon/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="imgs/favicon/favicon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="imgs/favicon/favicon-180.png">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="imgs/favicon/favicon-144.png">
+    <meta name="msapplication-config" content="imgs/favicon/browserconfig.xml">
+    <!-- favicon -->
+</head>
+<body>
+    <script src="js/third_parties/jquery-3.3.1.min.js"></script>
+    <script src="js/third_parties/leaflet/leaflet.js"></script>
+    <script src="js/third_parties/moment-with-locales.min.js"></script>
+    <script src="js/third_parties/OverlappingMarkerSpiderfier.js"></script>
+    <script src="js/third_parties/tinycolor-min.js"></script>
+
+    <div id="topLeftShadowHider"></div>
+    <div id="header">
+        <div style="flex:1" title="Search location">
+            <div style="position: relative; padding-left:2px; padding-right:2px">
+                <input autocomplete="off" id="searchInput" type="text" onclick="$('#dropdown').removeClass('active');$('#dropdown2').removeClass('active');"/>
+                <div id="headerIconSearch">
+                    <div style="padding-top:1px; height:26px">
+                        <img src="imgs/icons/search.svg" alt="" height="26" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="flex: 0 0 32px">
+            <div class="dropdown" id="dropdown">
+                <div class="menuButton" id="menuButtonMenu" title="Menu" onclick="$('#dropdown').toggleClass('active');$('#dropdown2').removeClass('active');"></div>
+                <div class="dropdown-content" id="dropdown-content">
+                    <ul>
+                        <li id="desktopLink" onclick="window.location.href='/'">Desktop version</li>
+                        <li id="androidAppLink" onclick="window.location.href='https://play.google.com/store/app/details?id=com.paraglidable.paraglidable'">Android app</li>
+                        <li id="facebookLink" onclick="window.location.href='https://m.facebook.com/paraglidable'">Facebook page</li>
+                        <li id="colorBlindLink" onclick="switchColorBlind()">Color blind mode: <span id="colorBlindModeStrValLink" style="font-weight:bold;"></span></li>
+                        <li id="legendLink" onclick="$('#legendModal').css('display', 'block');$('#dropdown').removeClass('active');$('#dropdown2').removeClass('active');">Legend</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerMapControls">
+        <div class="mapControlButton" id="mapControlButtonPlus" title="Zoom in" onclick="mapZoom(+1)"></div>
+        <div class="mapControlButton" id="mapControlButtonMinus" title="Zoom out" onclick="mapZoom(-1)"></div>
+        <div class="mapControlButton dropdown2" id="dropdown2" title="Layers">
+            <div class="mapControlButton" id="menuButtonLayers" title="Menu" onclick="$('#dropdown').removeClass('active');$('#dropdown2').toggleClass('active');"></div>
+            <div class="dropdown-content2">
+                <li id="checkboxShowHideMapColors" onclick="switchLayersVisibility(0)">Map colors</li>
+                <li id="checkboxShowHideSpots" onclick="switchLayersVisibility(1)">Takeoffs</li>
+            </div>
+        </div>
+        <div class="mapControlButton bottom" id="mapControlButtonGps" title="GPS" onclick="mapGps()">
+            <img id="mapControlButtonGpsIcon" src="imgs/icons/gps.svg" />
+        </div>
+    </div>
+
+<div style="display: flex; flex-flow: column wrap; height: 100%">
+    <div id="map"></div>
+    <div id="week">loading...</div>
+</div>
+
+<script>
+var g_setPositionFunction = null;
+var viewCenter = [47,8.5];
+var viewZoom   = 6;
+</script>
+
+<script src="js/third_parties/autocomplete.js"></script>
+<script src="js/paraglidable_lib.js"></script>
+<script src="js/paraglidable_mobile.js"></script>
+
+<script>
+
+function detectLocation()
+{
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getGpsPosition, handleLocationError);
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+}
+
+function handleLocationError(error) {
+    setPositionMobile(viewCenter[0], viewCenter[1], -1);
+}
+
+function getGpsPosition(position) {
+    setPositionMobile(position.coords.latitude, position.coords.longitude, -1);
+}
+
+var strView = getCookie("view");
+if (strView != "") {
+    arView     = strView.split(",");
+    viewCenter = [parseFloat(arView[0]), parseFloat(arView[1])];
+    zoom       = parseInt(arView[2]);
+    setPositionMobile(viewCenter[0], viewCenter[1], zoom);
+} else {
+    detectLocation();
+}
+
+//
+
+dayClick(moment().format("YYYY-MM-DD"));
+
+</script>
+
+
+
+<script type="text/javascript">
+    applyLayersPreference();
+</script>
+
+<script>
+    setCookie("mobileVersion", "1");
+</script>
+
+
+
+
+<div class="mobileModal" id="legendModal">
+    <div class="mobileModalContainer">
+            <div class="mobileModalTitle" id="legendModalTitle">
+                <div class="mobileModalTileText">Legend</div>
+                <div class="mobileModalTileCross" onclick="$(this).closest('.mobileModal').css('display','none');"></div>
+            </div>
+            <div class="mobileModalContent">
+
+
+                <div style="height:5px"></div>
+                <div class="legendSection" id="legendSectionPredictions">
+                    <div class="legendLine">
+                        <div class="legendLineName">Can I fly?</div>
+                        <div class="legendLineValue">
+                            <div id="legendImg1" class="legendImg colorMap">
+                                <div style="flex:1;text-align:left;font-size:11px;margin-top:3px;font-weight:bold;padding-left:2px">0%</div>
+                                <div style="flex:1;text-align:right;font-size:11px;margin-top:3px;font-weight:bold;padding-right:2px">100%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="legendLine">
+                        <div class="legendLineName">Can I do XC?</div>
+                        <div class="legendLineValue">
+                            <div id="legendImg2" class="legendImg colorMap">
+                                <div style="flex:1;text-align:left;font-size:11px;margin-top:3px;font-weight:bold;padding-left:2px">0%</div>
+                                <div style="flex:1;text-align:right;font-size:11px;margin-top:3px;font-weight:bold;padding-right:2px">100%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

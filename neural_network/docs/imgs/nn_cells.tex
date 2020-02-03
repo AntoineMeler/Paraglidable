@@ -1,0 +1,193 @@
+\documentclass[tikz,border=0mm]{standalone} 
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+\usetikzlibrary{shadows.blur}
+\usepackage{ifthen}
+\usepackage{amsmath}
+
+\input{nn_common.tex}
+
+\begin{document}
+\fontfamily{phv}\selectfont
+\begin{tikzpicture}
+
+
+
+%\end{tikzpicture}
+%\end{document}
+
+
+
+\arrowgrid{1}{0}{1.56}{0}
+\arrowgrid{2}{0}{3.6}{0}
+\arrowgrid{1}{0.975}{3.6}{0.19}
+
+% inputs to XC Layer
+\arrowgrid{3}{0.1}{4.49}{0.85}
+\arrowgrid{1}{1}{4.49}{1}
+\arrowgrid{5.0}{0}{5.0}{0.65}
+
+
+% inputs Population Layer
+\arrowgrid{5}{1}{6.2}{1}
+\arrowgrid{4}{0}{6.2}{0}
+\arrowgrid{1}{1.65}{6.2}{1.65}
+
+% outputs Population Layer
+\arrowgrid{6.95}{0}{7.9}{0}
+\arrowgrid{6.95}{1}{7.9}{1}
+
+% Input wind + mountainess
+\begin{ingrid}{1}{0}
+	\node at (2.9,  2.5+0.35, -1.75) {\tensorlabel{\textcolor{windcolor}{wind (8)}}};
+	\tensor{fill=windcolor}{fill=windcolor!75!black, thick}{10}{3}{5}
+	\begin{scope}[xshift=5.5cm]
+		\tensor{fill=mountainess}{fill=mountainess!75!black, thick}{1}{1}{5}
+		\node[rotate=45] at (1.88cm, 1.5cm) {\tensorlabel{\textcolor{mountainess}{mountainess (1)}}};
+	\end{scope}
+\end{ingrid}
+
+% date + dow
+\begin{ingrid}{1}{1.75}
+	\inputdatedow
+\end{ingrid}
+
+%\end{tikzpicture}
+%\end{document}
+
+
+% Wind Block
+\begin{ingrid}{1.95}{0}
+	\begin{scope}[xshift=2.95cm, yshift=1cm]
+		\draw[fill=white, rounded corners, drop shadow]      (-7cm, -1.7cm) rectangle (7cm, 2.8cm);
+		\draw[draw=black, fill=white!95!black]  (-7cm,  0.4cm) rectangle (7cm, 1.3cm);
+
+		\draw[draw=black] ( 1.7cm, -1.7cm) -- (1.7cm, 1.3cm);
+		
+		\node[anchor=90] at (0cm, 2.4cm) {\blocktitle{Wind Block}};
+
+		\node at (-2.35cm, 0.85cm) {\scalebox{1.2}{\textbf{Model}}};
+		\begin{scope}[xshift=-3cm, yshift=-0.3cm]
+			\node at (0.25cm, 0.05cm) {$factor =  1 + \textcolor{mountainess}{\textbf{mountainess}} \cdot \textcolor{blocvarcolor}{\textbf{mountain\_factor}}$};
+			\node at (0cm,   -0.75cm) {$\mathbf{return} ~~ factor \cdot \left\lVert\overrightarrow{wind}\right\rVert$};
+		\end{scope}
+
+		\node at (4.4cm, 0.85cm) {\scalebox{1.2}{\textbf{Optimized Variables}}};
+		\begin{scope}[xshift=3.5cm, yshift=-0.2cm]
+			\node at (1.1cm, 0.0cm) {\textcolor{blocvarcolor}{\textbf{mountain\_factor (1)}}};
+			\begin{scope}[xshift=0.35cm, yshift=-1.7cm]\tensor{fill=varcolor!75!black, thick}{fill=varcolor!75!black, thick}{1}{1}{1}\end{scope}
+		\end{scope}
+	\end{scope}
+\end{ingrid}
+
+
+
+% Predicted Wind
+\begin{ingrid}{3}{0}
+	\node at (3.0,  2.5+0.35, -1.75) {\tensorlabel{\textcolor{windcolor}{predicted\_wind (1)}}};
+	\tensor{fill=windpredcolor}{fill=windpredcolor!75!black, thick}{10}{3}{5}
+\end{ingrid}
+
+
+% Humidity+other
+\begin{ingrid}{1}{1}
+	\inputhumidityother
+\end{ingrid}
+
+
+% Flyability Block
+\begin{ingrid}{4}{0}
+	\begin{scope}[xshift=2.95cm, yshift=1cm]
+		\draw[fill=white, rounded corners, drop shadow] (-4cm, -1.7cm) rectangle (4cm, 2.8cm);
+		\draw[draw=black]                  (-4cm,  1.3cm) -- (4cm, 1.3cm);
+		\node[anchor=90] at (0cm, 2.4cm) {\blocktitle{Flyability Block}};
+		\begin{scope}[xshift=0cm, yshift=1.1cm]\drawnn\end{scope}
+	\end{scope}
+\end{ingrid}
+
+
+
+% Predicted FLyability
+\begin{ingrid}{5.0}{0}
+\node at (3.0,  2.4, -1.75) {\tensorlabel{\textcolor{flyability}{predicted\_flyability (1)}}};
+\begin{scope}[yshift=0.5cm]\tensor{fill=flyability}{fill=flyability!75!black, thick}{10}{1}{5}\end{scope}
+\end{ingrid}
+
+
+% XC Block
+\begin{ingrid}{4.9}{1}
+	\begin{scope}[xshift=2.95cm, yshift=1cm]
+		\draw[fill=white, rounded corners, drop shadow] (-4cm, -1.7cm) rectangle (4cm, 2.8cm);
+		\draw[draw=black]                  (-4cm,  1.3cm) -- (4cm, 1.3cm);
+		\node[anchor=90] at (0cm, 2.4cm) {\blocktitle{Crossability Block}};
+		\begin{scope}[xshift=0cm, yshift=1.1cm]\drawnn\end{scope}
+	\end{scope}
+\end{ingrid}
+
+
+% Predicted XC
+\begin{ingrid}{5.7}{1}
+	\node at (2.8,  1.7, -1.75) {\tensorlabel{\textcolor{xccolor}{predicted\_crossability (1)}}};
+	\begin{scope}[xshift=0.5cm, yshift=0.6cm]\tensor{fill=xccolor}{fill=xccolor!75!black, thick}{10}{1}{1}\end{scope}
+\end{ingrid}
+
+
+
+% Population Block
+\begin{ingrid}{6.8}{0.805}
+	\begin{scope}[xshift=2.95cm, yshift=2cm]
+		\draw[fill=white, rounded corners, drop shadow]      (-12cm, -3.95cm) rectangle (12cm, 2.8cm);
+		\draw[draw=black, fill=white!95!black]  (-12cm,  0.4cm) rectangle (12cm, 1.3cm);
+
+		\draw[draw=black] ( 2.7cm, -3.95cm) -- (2.7cm, 1.3cm);
+		
+		\node[anchor=90] at (0cm, 2.4cm) {\blocktitle{Population Block}};
+
+		\node at (-5cm, 0.85cm) {\scalebox{1.2}{\textbf{Model}}};
+		\node at (7.5cm, 0.85cm) {\scalebox{1.2}{\textbf{Optimized Variables}}};
+
+		% equation
+		\begin{scope}[xshift=-6.1cm, yshift=-1.1cm]
+			\begin{scope}
+				\node at (1.5cm, 0) {$population = \textcolor{blocvarcolor}{\textbf{cell\_population}} \cdot \textcolor{blocvarcolor}{\textbf{dow\_factor}\textbf{[}\textcolor{dow}{\textbf{day\_of\_week}}\textbf{]}} \cdot (1+\textcolor{blocvarcolor}{\textbf{date\_factor}} \cdot \textcolor{date}{\textbf{date}})$};
+			\end{scope}
+			\begin{scope}[xshift=1cm, yshift=-1.25cm]
+				\node at (0.575cm, 0) {$\displaystyle \mathbf{return} \left\{\begin{array}{ll}x \cdot population  & \text{if} ~~ population \le 1\\
+																		1-(1-x)^{population} & \text{if} ~~ population > 1\end{array}\right.$};
+			\end{scope}
+		\end{scope}
+
+		% vars
+		\begin{scope}[xshift=2.0cm, yshift=-2.65cm]
+			\begin{scope}[xshift=2.6cm, yshift=-1.65cm]
+				\node at (3.1,  1.8, -1.75) {\textcolor{blocvarcolor}{\textbf{cell\_population (1)}}};
+				\tensor{fill=varcolor}{fill=varcolor!75!black, thick}{10}{1}{5}
+			\end{scope}
+			\node at (5.5,  1.8, -1.75) {\textcolor{blocvarcolor}{\textbf{date\_factor (1) \hspace{0.15cm} dow\_factor (6)}}};
+			\begin{scope}[xshift=4.1cm, yshift=0.8cm] \tensor{fill=varcolor}{fill=varcolor!75!black, thick}{1}{1}{1} \end{scope}
+			\begin{scope}[xshift=7.0cm, yshift=0.8cm] \tensor{fill=varcolor}{fill=varcolor!75!black, thick}{1}{1}{1} \end{scope}
+		\end{scope}
+	\end{scope}
+\end{ingrid}
+
+
+
+
+% Predicted FLyability with popu
+\begin{ingrid}{8.19}{0}
+	\node at (3.0,  2.4, -1.75) {\tensorlabel{\textcolor{flyabilitypopu}{predicted\_flown (1)}}};
+	\begin{scope}[xshift=0.0cm, yshift=0.5cm]\tensor{fill=flyabilitypopu}{fill=flyabilitypopu!75!black, thick}{10}{1}{5}\end{scope}
+\end{ingrid}
+
+
+% Predicted XC with popu
+\begin{ingrid}{8.1}{1}
+	\node at (2.8,  1.7, -1.75) {\tensorlabel{\textcolor{xccolorpopu}{predicted\_crossed (1)}}};
+	\begin{scope}[xshift=0.5cm, yshift=0.6cm]\tensor{fill=xccolorpopu}{fill=xccolorpopu!75!black, thick}{10}{1}{1}\end{scope}
+\end{ingrid}
+
+
+
+
+\end{tikzpicture}
+\end{document}

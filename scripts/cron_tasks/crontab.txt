@@ -1,0 +1,6 @@
+MAILTO=""
+*/21 * * * * python3 /root/GIT/Paraglidable/scripts/cron_tasks/set_current_commit.py
+*/30 * * * * sh /root/GIT/Paraglidable/scripts/cron_tasks/update_forecasts.sh
+*/30 * * * * python3 /root/GIT/Paraglidable/scripts/cron_tasks/check_server.py
+0 2 * * * python3 /root/GIT/Paraglidable/scripts/cron_tasks/clean.py
+@reboot sh /root/GIT/Paraglidable/scripts/cron_tasks/reboot.sh
