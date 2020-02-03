@@ -27,7 +27,7 @@ class Forecast:
 	def __init__(self, models_directory, problem_formulation):
 
 		if Forecast.on_the_server():
-			root = "/root/GIT/Paraglidable/"
+			root = "/home/antoine/GIT/Paraglidable/"
 			self.DEBUG_MODE                    = False
 			self.last_forecast_time_file_dir   = "/tmp/lastForecastTime"
 			self.downloaded_forecasts_dir      = "/tmp/forecasts"

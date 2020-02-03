@@ -1,3 +1,3 @@
 #!/bin/sh
-cd /root/GIT/Paraglidable/neural_network/
+cd /home/antoine/GIT/Paraglidable/neural_network/
 python3 forecast.py
