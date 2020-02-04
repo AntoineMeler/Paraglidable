@@ -69,7 +69,7 @@
         <ul>
             <li id="aboutLink" onclick="switchVisibility('newPopupAbout')">What is it?</li>
             <li id="githubLink" onclick="window.open('https://github.com/AntoineMeler/Paraglidable','_blank')">GitHub page</li>
-            <li id="contactLink" onclick="switchVisibility('newPopupContact')">Contact</li>
+            <li id="contactLink" onclick="switchVisibility('newPopupContact')">Contact/Follow</li>
             <li id="creditsLink" onclick="switchVisibility('newPopupCredits')">Credits</li>
             <li id="linksLink" onclick="switchVisibility('newPopupLinks')">Links</li>
         </ul>
@@ -1914,34 +1914,17 @@ function mapGps()
     <div id="newPopupContact" class="newModal">
         <div class="newModalContainer">
             <div class="newModalTitle">
-                <div class="newModalTileText">Contact</div>
+                <div class="newModalTileText">Contact/Follow</div>
                 <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
             </div>
             <div class="newModalContent">
-                <!-- -------------------------------------------------------------- -->
-                <div id="fb-root"></div>
-                <script>(function(d, s, id) {
-                  var js, fjs = d.getElementsByTagName(s)[0];
-                  if (d.getElementById(id)) return;
-                  js = d.createElement(s); js.id = id;
-                  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
-                  fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));</script>
-                <!-- -------------------------------------------------------------- -->
-
-
-                <h1>Facebook</h1>
+				<br>
                 <div class="contactParagraphContainer">
-                        <div style="width: 100%; display:flex">
-                            <div style="flex:1">
-                                <div style="margin-left: 10px">
-                                    <div class="fb-page" data-href="https://www.facebook.com/paraglidable/" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/paraglidable/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/paraglidable/">Paraglidable</a></blockquote></div>
-                                </div>
-                            </div>
-                        </div>
+				<a href="https://www.facebook.com/paraglidable" target="_blank"><img src="imgs/icons/contact_facebook.svg" width="70px"></a>
+				<a href="https://twitter.com/paraglidable" target="_blank"><img src="imgs/icons/contact_twitter.svg" width="70px"></a>
+				<a href="mailto:antoine@paraglidable.com" target="_blank"><img src="imgs/icons/contact_email.svg" width="70px"></a>
                 </div>
-
-                <h1>Direct message</h1>
+				<br><br>
                 <div class="contactParagraphContainer">
                     <div class="contactParagraph">
                         <div style="width: 100%; display:flex;">
@@ -1954,20 +1937,11 @@ function mapGps()
                         </div>
                         <div style="width: 100%;">
                             <div style="padding:0px 5px;flex:1;font-weight: bold">Your message</div>
-                            <div style="padding:5px;"><textarea id="message-text" style="width:100%; height:60px" placeholder="Message"></textarea></div>
+                            <div style="padding:5px;"><textarea id="message-text" style="width:100%; height:120px" placeholder="Message"></textarea></div>
                         </div>
                         <div style="width: 100%; display:flex;">
                             <div style="padding-left:5px;flex:1"><input id="send-message" style="width:100%;" type="button" value="send"></div>
                         </div>
-                    </div>
-                </div>
-
-                <h1>E-mail</h1>
-                <div class="contactParagraphContainer">
-                    <div class="contactParagraph">
-                        <div style="margin-left: 10px">
-                            <span>antoine</span><span id="at"></span><span>paraglidable.com</span>
-                        </div> 
                     </div>
                 </div>
             </div>
