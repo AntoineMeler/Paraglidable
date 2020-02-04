@@ -457,19 +457,19 @@ class SpotsData:
 	def __load(self):
 
 		self.spots                 = BinObj.load("spots_merged")  # ("name", lat, lon)
-		self.spots_by_cell          = BinObj.load("spots_by_cell")
+		self.spots_by_cell         = BinObj.load("spots_by_cell")
 		self.flights_by_spot 	   = BinObj.load("flights_by_spot")
 		self.flights_by_cell_day_spot = BinObj.load("flights_by_cell_day_spot")
-		self.meteo_days             = BinObj.load("meteo_days")
+		self.meteo_days            = BinObj.load("meteo_days")
 
 
 	def __save(self):
 
 		assert(not self.data_not_loaded())
 
-		BinObj.save(self.spots,                 "spots_merged")
-		BinObj.save(self.spots_by_cell,          "spots_by_cell")
-		BinObj.save(self.flights_by_spot,        "flights_by_spot")
+		BinObj.save(self.spots,                    "spots_merged")
+		BinObj.save(self.spots_by_cell,            "spots_by_cell")
+		BinObj.save(self.flights_by_spot,          "flights_by_spot")
 		BinObj.save(self.flights_by_cell_day_spot, "flights_by_cell_day_spot")
 
 
