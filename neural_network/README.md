@@ -44,6 +44,7 @@ min_lat, max_lat = min([c[0] for c in sorted_cells_latlon])-cell_reso/2., max([c
 min_lon, max_lon = min([c[1] for c in sorted_cells_latlon])-cell_reso/2., max([c[1] for c in sorted_cells_latlon])+cell_reso/2.
 
 plt.figure(figsize=((max_lon-min_lon)*.85, (max_lat-min_lat)*.85))
+plt.title("Training cells and flights")
 m = Basemap(projection='mill', llcrnrlon=min_lon-2.5, llcrnrlat=min_lat-2.5, urcrnrlon=max_lon+2.5, urcrnrlat=max_lat+2.5, resolution='h')
 m.shadedrelief()
 
@@ -72,7 +73,7 @@ plt.show()
 
 We consider only the take-off coordinates (latitude, longitude, altitude) of a flight because, far from any take-off area, an absence of flight does not implies non-flyability.
 
-Number of days with weather data and flights for these days.
+Flights statistics:
 
 
 <details><summary>Expand code</summary><p>
@@ -108,7 +109,7 @@ axes[1,1].set_title("nb flights per days, by month")
 axes[1,1].bar(months, [counter_flights_by_month[m]/counter_months[m] for m in months])
 axes[1,1].set_title("nb flights by day of week")
 axes[2,0].bar(dow, [counter_flights_by_dow[d] for d in dow])
-print("dow", [counter_flights_by_dow[d] for d in dow])
+print("day of week factors:", [counter_flights_by_dow[d] for d in dow])
 
 # Flights by altitude
 axes[2,1].set_title("nb flights per altitude level")
@@ -123,7 +124,7 @@ fig.tight_layout()
 
 </p></details>
 
-    dow [111383, 107993, 117721, 131987, 154665, 266616, 238255]
+    day of week factors: [111383, 107993, 117721, 131987, 154665, 266616, 238255]
 
 
 
@@ -249,7 +250,7 @@ for krow in range(nbp):
 ## Introduction
 
 The problem of flyability prediction is formulated as a classification problem where the input X is the weather data  in a 3D cell and the output Y is the absence/presence of at least one reported flight in this cell.
-We assume that the presence of reported flight implies _flyability_ but, absence of reported flight does not imply _flyability_.
+We assume that the presence of reported flights implies _flyability_ but, absence of reported flights does not imply _non-flyability_.
 The gap between reported flights and _flyability_ is explained by what we call the [population](#Population-Block).
 
 <p align="center"><img src="docs/imgs/prediction_training_population.svg" width="70%"/></p>
@@ -286,7 +287,7 @@ The paragliders decisions are supposed independent.
 ![](docs/README_files/equation_0.svg)
 
 The Population Block computes the probability that at least one person goes fly given the _flyability_ and the _population_.
-The _population_ for each cell and spot is an inner variable optimized during training.
+The _population_ for each cell and spot is an inner variable, optimized during training.
 
 ![](docs/README_files/equation_1.svg)
 
@@ -409,6 +410,8 @@ For the cells forecasts, only the norm is considered:
 
 ![](docs/README_files/equation_5.svg)
 
+The <em>mountainess_factor</em> aims to take into account that the tolerable wind in the plain is greater than in mountain areas.
+
 
 <details><summary>Expand code</summary><p>
 
@@ -423,7 +426,7 @@ print("mountainess_factor =", mountainess_factor)
 
 
 #### Spots
-The returned value is the dot product between the wind and the direction_factor at all altitudes, interpolated at relevant_altitude.
+The returned value is the dot product between the wind and the <em>direction_factor</em> at all altitudes, interpolated at <em>relevant_altitude</em>.
 
 
 ![](docs/README_files/equation_6.svg)
