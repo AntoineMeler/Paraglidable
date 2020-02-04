@@ -1,6 +1,6 @@
 # Scripts
 
-## To be executed ones
+## To be executed once
 
 ```bash
 python download_data.py             # Download training weather and flights data (200MB)
