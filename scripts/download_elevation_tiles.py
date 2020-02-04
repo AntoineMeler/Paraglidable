@@ -6,7 +6,7 @@ scripts_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = scripts_dir + "/.."
 dest_dir = root_dir + "/tiler/_cache/elevation"
 if os.path.isdir("/workspaces/Paraglidable"): # in docker
-	www_dir = root_dir + "/www/
+	www_dir = root_dir + "/www/"
 else: # on production server
 	www_dir = "/var/www/html/"
 
