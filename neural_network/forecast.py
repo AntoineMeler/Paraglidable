@@ -563,7 +563,8 @@ class Forecast:
 				self.set_progress(100, strdate)
 
 
-	def __compute_cells_forecasts(self, models_directory, problem_formulation, meteo_matrix):
+	@staticmethod
+	def __compute_cells_forecasts(models_directory, problem_formulation, meteo_matrix):
 		Verbose.print_arguments()
 		predict = Predict(models_directory, ModelType.CELLS, problem_formulation)
 		predict.set_meteo_data(meteo_matrix, GfsData().parameters_vector_all)

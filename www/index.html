@@ -825,7 +825,7 @@ function tilesUrl(date, transpa)
 {
     if (g_mode == 'analysis')
     {
-        tilesdir = 'data/tiles_anl';
+        tilesdir = 'data/tiles_anl/'+date.substring(0,4);
         transpa = true;
     }
     else
@@ -1949,8 +1949,6 @@ function mapGps()
     </div>
 
     <script>
-        $("#at").html("@");
-
         $('#send-message').click(function(){
 
             var message_name  = $("#message-name").val();
