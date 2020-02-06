@@ -23,6 +23,7 @@ from inc.forecast_data import ForecastData
 ################################################################################################
 
 # (TODO) the tiler cache must be deleted before and after this script as the cell resolution is different
+# You may also want to reduce the computed tiles area in tiler/main.cpp
 
 if __name__ == "__main__":
 

@@ -1546,9 +1546,9 @@ int main(int argc, char *argv[])
             int scaleFactor = powint(2, zoom-5);
             std::vector<int> shifts(1, 1);
 
-            for (int tx=(15)*scaleFactor; tx<(18+1-1)*scaleFactor; tx++)
+            for (int tx=(15)*scaleFactor; tx<(18+1)*scaleFactor; tx++)
             {
-                for (int ty=(9-1+1)*scaleFactor; ty<(13)*scaleFactor; ty++)
+                for (int ty=(9-1)*scaleFactor; ty<(13)*scaleFactor; ty++)
                 {
                     // Check if this tile must be skipped
                     bool skip = false;
