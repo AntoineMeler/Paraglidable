@@ -22,6 +22,8 @@ from inc.forecast_data import ForecastData
 #
 ################################################################################################
 
+# (TODO) the tiler cache must be deleted before and after this script as the cell resolution is different
+
 if __name__ == "__main__":
 
 	prediction_filename_for_tiler = "prediction_filename_for_tiler"
@@ -44,59 +46,65 @@ if __name__ == "__main__":
 		flights_dir_this_day = "../www/data/flights_anl/"+ day.strftime("%Y/%Y-%m-%d")
 		nb_tiles = len(glob.glob(tiles_dir_this_day+"/256/*/*/*.png"))
 
-		if False and nb_tiles != 118: # already computed
+		if nb_tiles != 118: # already computed
 
-			meteo_files = [[f for f in glob.glob(src_anl_dir+day.strftime("%Y-%m/")+day.strftime("gfsanl_3_%Y%m%d_")+("%02d00"%h)+"*.grb*") if ".params" not in f][0] for h in [6,12,18]]
+			try:
+				meteo_files = [[f for f in glob.glob(src_anl_dir+day.strftime("%Y-%m/")+day.strftime("gfsanl_3_%Y%m%d_")+("%02d00"%h)+"*.grb*") if ".params" not in f][0] for h in [6,12,18]]
 
-			#print(meteo_files, tiles_dir_this_day)
-			#continue
+				#print(meteo_files, tiles_dir_this_day)
+				#continue
 
-			problem_formulation = ProblemFormulation.CLASSIFICATION
-			models_directory = "bin/models/CLASSIFICATION_1.0.0/"
-			meteoParams = BinObj.load("meteo_params")
-			grid_desc_predictions = (1.0, 1.0, -0.5, -0.5)  # can be different from meteo grid
-			crops = [(93//4, 274//4, 0, 136//4), (93//4, 274//4, 1394//4, 1440//4)]
+				problem_formulation = ProblemFormulation.CLASSIFICATION
+				models_directory = "bin/models/CLASSIFICATION_1.0.0/"
+				meteoParams = BinObj.load("meteo_params")
+				grid_desc_predictions = (1.0, 1.0, -0.5, -0.5)  # can be different from meteo grid
+				crops = [(93//4, 274//4, 0, 136//4), (93//4, 274//4, 1394//4, 1440//4)]
 
-			#======================================================================================
-			# Read weather data
-			#======================================================================================
+				#======================================================================================
+				# Read weather data
+				#======================================================================================
 
-			distinct_latitudes, distinct_longitudes, meteo_matrix = ForecastData.readWeatherData(meteo_files, crops)
+				distinct_latitudes, distinct_longitudes, meteo_matrix = ForecastData.readWeatherData(meteo_files, crops)
 
-			#======================================================================================
-			# Compute and generate the predictions file for tiler
-			#======================================================================================
+				#======================================================================================
+				# Compute and generate the predictions file for tiler
+				#======================================================================================
 
-			ForecastAndAnl.compute_prediction_file_cells(# predictions
-												ForecastAndAnl.compute_cells_forecasts(models_directory, problem_formulation, meteo_matrix),
-												# other params
+				ForecastAndAnl.compute_prediction_file_cells(# predictions
+													ForecastAndAnl.compute_cells_forecasts(models_directory, problem_formulation, meteo_matrix),
+													# other params
+													prediction_filename_for_tiler,
+													distinct_latitudes,
+													distinct_longitudes,
+													np.copy(meteo_matrix),
+													crops,
+													meteoParams,
+													grid_desc_predictions)
+
+				#========================================================================
+				# Render tiles
+				#========================================================================
+
+				ForecastAndAnl.generate_tiler_argument_file(	tiler_arguments_filename,
 												prediction_filename_for_tiler,
-												distinct_latitudes,
-												distinct_longitudes,
-												np.copy(meteo_matrix),
-												crops,
-												meteoParams,
-												grid_desc_predictions)
+												tiles_dir_this_day,
+												tiler_cache_dir,
+												geo_json_borders,
+												min_tiles_zoom,
+												max_tiles_zoom,
+												background_tiles_dir,
+												True,
+												"",
+												skipped_tiles,
+												generateTranspaVersion = True)
 
-			#========================================================================
-			# Render tiles
-			#========================================================================
-
-			ForecastAndAnl.generate_tiler_argument_file(	tiler_arguments_filename,
-											prediction_filename_for_tiler,
-											tiles_dir_this_day,
-											tiler_cache_dir,
-											geo_json_borders,
-											min_tiles_zoom,
-											max_tiles_zoom,
-											background_tiles_dir,
-											True,
-											"",
-											skipped_tiles,
-											generateTranspaVersion = True)
-
-			call([tiler_program, tiler_arguments_filename])
-
+				call([tiler_program, tiler_arguments_filename])
+			
+			except KeyboardInterrupt:
+				raise
+			
+			except:
+				print("ERROR with"+ str(day))
 
 		#========================================================================
 		# Flights
@@ -110,6 +118,3 @@ if __name__ == "__main__":
 		os.makedirs(flights_dir_this_day, exist_ok=True)
 		with open(flights_dir_this_day+"/flights.json", "w") as fout:
 			fout.write(json_content)
-		print("\n\n")
-		print(json_content)
-		print("\n\n")

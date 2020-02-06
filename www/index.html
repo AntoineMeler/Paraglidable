@@ -218,15 +218,15 @@
                 <div class="legendLineValue">
                     <div id="legendImg4" class="legendImg colorMap">
                         <svg width="200" height="20">
-                            <circle cx="20"  cy="10" r="1"    stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="41"  cy="10" r="1.78" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="62"  cy="10" r="2.67" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="83"  cy="10" r="3.56" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="104" cy="10" r="4.43" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="125" cy="10" r="5.32" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="146" cy="10" r="6.21" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="167" cy="10" r="7.10" stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
-                            <circle cx="188" cy="10" r="8"    stroke="#00FFFF" stroke-width="1" fill="#0000FF" />
+                            <circle cx="20"  cy="10" r="2.5"    stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="41"  cy="10" r="3.1875" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="62"  cy="10" r="3.875"  stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="83"  cy="10" r="4.5625" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="104" cy="10" r="5.25"   stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="125" cy="10" r="5.9375" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="146" cy="10" r="6.625"  stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="167" cy="10" r="7.3125" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="188" cy="10" r="8"      stroke="#ffffff" stroke-width="1" fill="#5050FF" />
                         </svg>
                     </div>
                 </div>
@@ -981,30 +981,30 @@ function loadSpots(decodedJson)
 function loadFlights(decodedJson)
 {
 	flights = decodedJson['flights'];
-    console.log("flights", flights);
 
 	if (g_flightsLayer != null) {
         if (map.hasLayer(g_flightsLayer))
             map.removeLayer(g_flightsLayer);
     }
 
+	var area = L.rectangle([[42.5, 3.5], [49.5, 18.5]], {color: "#000000", weight: 1., fill: false, opacity:0.5});
+	var flightsLayers = [area];
 
-	var flightsLayers = [];
 	for (f=0; f<flights.length; f++)
 	{
 		var circle = L.circleMarker([flights[f][0], flights[f][1]], {
-			color: '#000000',
-			fillColor: '#00FFFF',
+			color: '#ffffff',
+			fillColor: '#5050FF',
 			fillOpacity: 0.5,
+			opacity: 0.5,
 			radius: (2.5 + flights[f][2]/40.),
-			weight: 1
+			weight: 0.5
 		});
 
 		flightsLayers.push(circle);
 	}
 
 	g_flightsLayer = L.layerGroup(flightsLayers);
-
 
 	if (!map.hasLayer(g_flightsLayer))
             g_flightsLayer.addTo(map);
@@ -1022,8 +1022,16 @@ function downloadSpotsPredictions()
         if (map.hasLayer(g_spotsLayer))
             map.removeLayer(g_spotsLayer);
     }
+	if (g_mode != 'analysis')
+		$.getJSON("data/tiles/"+ g_strDate +"/spots.json", function(data){loadSpots(data)});
+}
 
-    $.getJSON("data/tiles/"+ g_strDate +"/spots.json", function(data){loadSpots(data)});
+function downloadFlights()
+{
+	if (g_mode == 'analysis')
+	{
+		$.getJSON("data/flights_anl/"+ g_strDate.substring(0,4) +"/"+ g_strDate +"/flights.json", function(data){loadFlights(data)});
+	}
 }
 
 function changeDate(strDate)
@@ -1039,6 +1047,7 @@ function changeDate(strDate)
     updateLastUpdateDate();
     updatePrevNextButtons();
     downloadSpotsPredictions();
+    downloadFlights();
 
     //
     if (paraglidableTiles == null)
@@ -1059,9 +1068,6 @@ function changeDate(strDate)
     {
         paraglidableTiles.setUrl(tilesUrl(strDate, map.getZoom() >= g_switchZoom));
     }
-	//====================================================================================
-    $.getJSON("data/flights_anl/"+ g_strDate.substring(0,4) +"/"+ g_strDate +"/flights.json", function(data){loadFlights(data)});
-	//====================================================================================
 }
 
 function moveDay(deltaDay)
@@ -2218,6 +2224,8 @@ function mapGps()
                              'api':      'apiNavigationBar',
                              'analysis': 'analysisNavigationBar' };
 
+		oldMode = g_mode;
+		
         if (strMode == 'main' || strMode == 'api' || strMode == 'analysis')
         {
             if ( (strMode != 'main' && switchNavigationBar(idsNavigationBar[strMode])) )
@@ -2275,6 +2283,15 @@ function mapGps()
             if (g_mode != 'api')
                 removeAllApiMarkers();
 
+			if (g_mode != 'analysis')
+			{
+				if (g_flightsLayer != null)
+				{
+        			if (map.hasLayer(g_flightsLayer))
+            			map.removeLayer(g_flightsLayer);
+				}
+			}
+
             // Calendar
 
             if (g_mode == 'analysis')
@@ -2286,7 +2303,7 @@ function mapGps()
             {
                 changeDate('2013-04-07');
             }
-            else if (g_mode == 'main')
+            else if (oldMode=='analysis')
             {
                 changeDate(moment().format("YYYY-MM-DD"));
             }
@@ -2765,11 +2782,6 @@ $.ajax({
 									$("div#version").html('<a target="_blank" href="https://github.com/AntoineMeler/Paraglidable/tree/'+ commit +'">commit '+ commit.substring(0,8) +"</a>");
 								}
 });
-
-
-
-switchMode('analysis');   // TMP
-changeDate('2009-01-01'); // TMP
 
 </script>
 
