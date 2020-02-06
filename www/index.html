@@ -503,6 +503,7 @@ var map = L.map('map', {attributionControl: false, zoomControl: false, minZoom: 
 var vignettesMaps = [];
 
 var g_spotsLayer = null;
+var g_flightsLayer = null;
 
 //=========================================
 // map events/actions
@@ -975,6 +976,42 @@ function loadSpots(decodedJson)
     }
 }
 
+
+
+function loadFlights(decodedJson)
+{
+	flights = decodedJson['flights'];
+    console.log("flights", flights);
+
+	if (g_flightsLayer != null) {
+        if (map.hasLayer(g_flightsLayer))
+            map.removeLayer(g_flightsLayer);
+    }
+
+
+	var flightsLayers = [];
+	for (f=0; f<flights.length; f++)
+	{
+		var circle = L.circleMarker([flights[f][0], flights[f][1]], {
+			color: '#000000',
+			fillColor: '#00FFFF',
+			fillOpacity: 0.5,
+			radius: (2.5 + flights[f][2]/40.),
+			weight: 1
+		});
+
+		flightsLayers.push(circle);
+	}
+
+	g_flightsLayer = L.layerGroup(flightsLayers);
+
+
+	if (!map.hasLayer(g_flightsLayer))
+            g_flightsLayer.addTo(map);
+}
+
+
+
 //========================================================================================
 //
 //========================================================================================
@@ -1022,6 +1059,9 @@ function changeDate(strDate)
     {
         paraglidableTiles.setUrl(tilesUrl(strDate, map.getZoom() >= g_switchZoom));
     }
+	//====================================================================================
+    $.getJSON("data/flights_anl/"+ g_strDate.substring(0,4) +"/"+ g_strDate +"/flights.json", function(data){loadFlights(data)});
+	//====================================================================================
 }
 
 function moveDay(deltaDay)
@@ -2725,6 +2765,12 @@ $.ajax({
 									$("div#version").html('<a target="_blank" href="https://github.com/AntoineMeler/Paraglidable/tree/'+ commit +'">commit '+ commit.substring(0,8) +"</a>");
 								}
 });
+
+
+
+switchMode('analysis');   // TMP
+changeDate('2009-01-01'); // TMP
+
 </script>
 
 </body>
