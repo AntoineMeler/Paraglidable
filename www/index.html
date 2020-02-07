@@ -218,15 +218,15 @@
                 <div class="legendLineValue">
                     <div id="legendImg4" class="legendImg colorMap">
                         <svg width="200" height="20">
-                            <circle cx="20"  cy="10" r="2.5"    stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="41"  cy="10" r="3.1875" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="62"  cy="10" r="3.875"  stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="83"  cy="10" r="4.5625" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="104" cy="10" r="5.25"   stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="125" cy="10" r="5.9375" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="146" cy="10" r="6.625"  stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="167" cy="10" r="7.3125" stroke="#ffffff" stroke-width="1" fill="#5050FF" />
-                            <circle cx="188" cy="10" r="8"      stroke="#ffffff" stroke-width="1" fill="#5050FF" />
+                            <circle cx="20"  cy="10" r="2.5"    stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="41"  cy="10" r="3.1875" stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="62"  cy="10" r="3.875"  stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="83"  cy="10" r="4.5625" stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="104" cy="10" r="5.25"   stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="125" cy="10" r="5.9375" stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="146" cy="10" r="6.625"  stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="167" cy="10" r="7.3125" stroke="#000000" stroke-width="1" fill="#5050FF" />
+                            <circle cx="188" cy="10" r="8"      stroke="#000000" stroke-width="1" fill="#5050FF" />
                         </svg>
                     </div>
                 </div>
@@ -925,8 +925,14 @@ function myOpenPopup(feature, layer)
     layer.openPopup(); 
 }
 
-function loadSpots(decodedJson)
+function loadSpots(date, decodedJson)
 {
+	if (g_strDate != date)
+	{
+		// json recieved already outdated (the date has changed since trigger)
+		return;
+	}
+
     if (g_spotsLayer != null) {
         if (map.hasLayer(g_spotsLayer))
             map.removeLayer(g_spotsLayer);
@@ -993,7 +999,7 @@ function loadFlights(decodedJson)
 	for (f=0; f<flights.length; f++)
 	{
 		var circle = L.circleMarker([flights[f][0], flights[f][1]], {
-			color: '#ffffff',
+			color: '#000000',
 			fillColor: '#5050FF',
 			fillOpacity: 0.5,
 			opacity: 0.5,
@@ -1015,6 +1021,11 @@ function loadFlights(decodedJson)
 //========================================================================================
 //
 //========================================================================================
+function callBackSpots(date) {
+  return function(data) {
+    loadSpots(date, data);
+  }
+}
 
 function downloadSpotsPredictions()
 {
@@ -1023,7 +1034,9 @@ function downloadSpotsPredictions()
             map.removeLayer(g_spotsLayer);
     }
 	if (g_mode != 'analysis')
-		$.getJSON("data/tiles/"+ g_strDate +"/spots.json", function(data){loadSpots(data)});
+	{
+		$.getJSON("data/tiles/"+ g_strDate +"/spots.json", callBackSpots(g_strDate));
+	}
 }
 
 function downloadFlights()
