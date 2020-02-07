@@ -402,8 +402,7 @@ class Forecast:
 					line += 1
 
 		#=============================================================
-		# Compute or load "cellsAndSpots"
-		# To be computed on my local machine
+		# Compute or load cells_and_spots
 		#=============================================================
 
 		filename_cells_and_spots = "Forecast_cellsAndSpots_"+ "_".join([str(crop[d]) for crop in self.crops for d in range(4)])
@@ -441,15 +440,14 @@ class Forecast:
 		spots_and_prediction = []
 		for kcslst, cslst in enumerate(cells_and_spots.items()):
 			meteoLine, spotsLst = cslst
-			if len(spotsLst) > 0:
-				for cs in spotsLst:
-					modelContent = ModelContent()
-					modelContent.add(cs[0][0], cs[0][1])
-					predict.trainedModel.load_all_weights(modelContent) # TODO do not reload shared weights
-					predict.set_prediction_population()
-					NN_X = predict.get_X([meteoLine])
-					prediction = predict.trainedModel.model.predict(NN_X)[0][0]
-					spots_and_prediction += [Spot((cs[1]['name'], cs[1]['lat'], cs[1]['lon']), cs[1]['id'], cs[1]['nbFlights'], prediction)] #[cs[1]]
+			for cs in spotsLst:
+				modelContent = ModelContent()
+				modelContent.add(cs[0][0], cs[0][1])
+				predict.trainedModel.load_all_weights(modelContent) # TODO do not reload shared weights
+				predict.set_prediction_population()
+				NN_X = predict.get_X([meteoLine])
+				prediction = predict.trainedModel.model.predict(NN_X)[0][0]
+				spots_and_prediction += [Spot((cs[1]['name'], cs[1]['lat'], cs[1]['lon']), cs[1]['id'], cs[1]['nbFlights'], prediction)] #[cs[1]]
 
 
 		#=============================================================
