@@ -2280,7 +2280,7 @@ function mapGps()
             {
                 var maxAnlLevel = 6;
                 paraglidableTiles.options.maxNativeZoom = L.Browser.retina ? maxAnlLevel-1 : maxAnlLevel;
-                map.setZoom(L.Browser.retina ? maxAnlLevel-1+1 : maxAnlLevel+1);
+                map.setZoom(L.Browser.retina ? maxAnlLevel-1 : maxAnlLevel);
             }
             else
             {
