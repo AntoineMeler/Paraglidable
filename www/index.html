@@ -1028,6 +1028,10 @@ function downloadSpotsPredictions()
 
 function downloadFlights()
 {
+	if (g_flightsLayer != null) {
+        if (map.hasLayer(g_flightsLayer))
+            map.removeLayer(g_flightsLayer);
+    }
 	if (g_mode == 'analysis')
 	{
 		$.getJSON("data/flights_anl/"+ g_strDate.substring(0,4) +"/"+ g_strDate +"/flights.json", function(data){loadFlights(data)});
@@ -1789,6 +1793,7 @@ function mapGps()
                         <li><a target="_blank" href="https://paraddicted.net/">paraddicted</a></li>
                         <li><a target="_blank" href="https://www.mr-airspaces.cloud">Mr. Airspaces - Telegram bot</a></li>
                         <li><a target="_blank" href="https://dbrgn.ch/meteo/">1337 Meteo</a></li>
+                        <li><a target="_blank" href="https://www.schwarzwaldgeier.de/merkur-wetter-prognose/">GSV Baden</a></li>
                     </ul>
                 </div>
 
