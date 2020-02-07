@@ -1,4 +1,4 @@
-import os, errno, urllib.request, time, sys
+import os, errno, urllib.request, time, sys, tqdm
 import os.path
 from PIL import Image
 
