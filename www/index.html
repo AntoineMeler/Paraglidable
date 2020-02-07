@@ -1185,6 +1185,9 @@ function updateSelectedVignetteDay()
 
 function updateLastUpdateDate()
 {
+	if (g_mode != 'main')
+		return;
+	
     const strDate = g_strDate;
 
     var client = new XMLHttpRequest();
