@@ -5,7 +5,8 @@
 * [Dataset](#dataset)
 	* [Training Area](#training-area)
 	* [Flights](#flights)
-	* [Weather Parameters](#weather-parameters)
+	* [Weather Data](#weather-data)
+		* [List of Weather Parameters Used](#list-of-weather-parameters-used)
 * [Neural Network](#neural-network)
 	* [Introduction](#introduction)
 	* [Network Architecture](#network-architecture)
@@ -26,7 +27,7 @@
 # Dataset
 
 The current training area is focused on the Alps as there is no time zone management for now.
-This area is segmented in 1°x1°x100hPa cells, corresponding to the GFS Analysis data cells.
+This area is segmented in 1°x1°x100hPa cells, corresponding to the [GFS Analysis](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs) cells.
 
 ## Training Area
 
@@ -60,9 +61,15 @@ Flights statistics:
 ![png](docs/README_files/README_5_0.png)
 
 
-## Weather Parameters
+## Weather Data
 
-The weather paramaters present in the GFS Analysis data has varied with time. We must select a subset present during the whole training interval.
+Experiments have been done with [ECMWF](https://www.ecmwf.int/) and [Météo France](http://www.meteofrance.com/previsions-meteo-france/simulations-numeriques-meteorologiques/france), but the [GFS model from NOAA](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs) is the only  model I know with both past and forecast data for free.
+Using the same model for training and forecasting is important and allows to learn and overcome the model weaknesses.
+This is why, I am using this only source of weather information currently.
+
+The weather paramaters present in the GFS Analysis data have varied over time. We must select a subset present during the whole training interval. The same list of parameters, at 3 different hours (06:00, 12:00, 18:00) are used.
+
+### List of Weather Parameters Used
 
 
 
@@ -262,9 +269,6 @@ The returned value is the dot product between the wind and the <em>direction_fac
 
 # Training
 
-The training uses:
-
-
 The [training procedure](docs/../train.py) uses:
 
 * Multiple initializations to keep the best after dozens of epochs
@@ -272,6 +276,3 @@ The [training procedure](docs/../train.py) uses:
 * Fine tuning with bigger training set/smaller validation set
 
 Prediction result on training data can be visualized here: [https://paraglidable.com/?mode=analysis](https://paraglidable.com/?mode=analysis)
-
-
-
