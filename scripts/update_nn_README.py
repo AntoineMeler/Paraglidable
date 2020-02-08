@@ -40,9 +40,9 @@ def github_inner_link(link):
 def generate_toc(md_file):
 
 	with open(md_file, "r") as fin:
-		mdcontent = code_removed(fin.read())
+		mdcontent = fin.read()
 		
-	sections = re.findall(r"^([#]+)[ ]*(.+)$", mdcontent, re.MULTILINE)
+	sections = re.findall(r"^([#]+)[ ]*(.+)$", code_removed(mdcontent), re.MULTILINE)
 	toc = ""
 	for section_level, section_title in sections:
 		toc += "*".rjust(len(section_level), "\t") +(" [%s](%s)"%(section_title, github_inner_link(section_title))) +"\n"
