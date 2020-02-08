@@ -15,12 +15,27 @@ def generate_notebook(src_file, dst_file):
 	shutil.move(os.path.dirname(src_file)+"/"+os.path.basename(dst_file), dst_file)
 
 
-def github_inner_link(title):
+g_inner_links = []
+def github_inner_link(link):
+	global g_inner_links
+
 	for char in ['&', '!', '%', '*', '+']:
-		title = title.replace(char, "")
-	title = title.replace(" ", "-")
-	title = title.lower()
-	return "#"+title
+		link = link.replace(char, "")
+
+	link = link.replace(" ", "-")
+	link = link.lower()
+
+	# When multiple sections have the same name, we add "-%d" in the link, as does GitHub
+	k = 2
+	candidate_link = link
+	while candidate_link in g_inner_links:
+		candidate_link = link +"-%d"%k
+		k += 1
+	link = candidate_link
+	
+	g_inner_links += [link]
+
+	return "#"+link
 
 def generate_toc(md_file):
 

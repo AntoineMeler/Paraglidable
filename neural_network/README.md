@@ -3,7 +3,7 @@
 # Table of contents
 
 * [Dataset](#dataset)
-	* [Training  Area](#training--area)
+	* [Training Area](#training-area)
 	* [Flights](#flights)
 	* [Weather Parameters](#weather-parameters)
 * [Neural Network](#neural-network)
@@ -17,8 +17,8 @@
 	* [Wind Block](#wind-block)
 		* [Input](#input)
 		* [Model](#model)
-			* [Cells](#cells)
-			* [Spots](#spots)
+			* [Cells](#cells-2)
+			* [Spots](#spots-2)
 * [Training](#training)
 
 
@@ -28,7 +28,7 @@
 The current training area is focused on the Alps as there is no time zone management for now.
 This area is segmented in 1°x1°x100hPa cells, corresponding to the GFS Analysis data cells.
 
-## Training  Area
+## Training Area
 
 
 
