@@ -457,6 +457,11 @@ class Forecast:
 		Forecast.__export_spots_forecasts(spots_and_prediction, filename)
 
 
+	# TODO: move this in the bin/data files
+	@staticmethod
+	def __fix_spots_name(name):
+		return name.replace("Laut Sodkopf", "Lauf Sodkopf")
+
 
 	@staticmethod
 	def __export_spots_forecasts(spots_and_prediction, filename): #[Spot(name, lat, lon, prediction), ...]
@@ -479,7 +484,7 @@ class Forecast:
 							"properties": {
 							
 											"id": \""""      + str(s.id)   + """\",
-											"name": \""""    + s.name.replace('"', '\\"')   + """\",
+											"name": \""""    + Forecast.__fix_spots_name(s.name).replace('"', '\\"')   + """\",
 											"nbFlights": """ + str(s.nbFlights)  + """,
 											"flyability": """+ str(s.prediction) + """
 										}
