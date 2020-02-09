@@ -19,13 +19,6 @@ from inc.verbose        import Verbose
 # Train
 ################################################################################################
 
-
-
-# TODO:
-#  - essayer de passer un validation_data au lieu d'utiliser validation_split
-#  - freeze des layers
-
-
 class MyTrainingLogger(tf.keras.callbacks.Callback):
 
 	def __init__(self, model_type, log_file=None):
