@@ -76,14 +76,14 @@ def get_flyability_block(other_dim, humidity_dim, name, disable_dropout=False):
 	layers += [tf.keras.layers.Concatenate(name="concatenate_flyability")]
 
 	layers += [tf.keras.layers.Dropout(dropout_rate)]
-	layers += [tf.keras.layers.Dense(32, use_bias=not batch_normalization, name="Flyability_1A")]
+	layers += [tf.keras.layers.Dense(32//2, use_bias=not batch_normalization, name="Flyability_1A")]
 	if batch_normalization:
 		layers += [tf.keras.layers.BatchNormalization()]
 	layers += [tf.keras.layers.Activation("tanh")]
 
 	
 	layers += [tf.keras.layers.Dropout(dropout_rate)]
-	layers += [tf.keras.layers.Dense(16, use_bias=not batch_normalization, name="Flyability_1B")]
+	layers += [tf.keras.layers.Dense(16//2, use_bias=not batch_normalization, name="Flyability_1B")]
 	if batch_normalization:
 		layers += [tf.keras.layers.BatchNormalization()]
 	layers += [tf.keras.layers.Activation("tanh")]
@@ -117,14 +117,14 @@ def get_crossability_block(other_dim, humidity_dim, nb_altitudes, wind_dim, mode
 	layers += [tf.keras.layers.Concatenate(name="concatenate_fufu", axis=-1)]
 
 	layers += [tf.keras.layers.Dropout(dropout_rate)]
-	layers += [tf.keras.layers.Dense(32, use_bias=not batch_normalization, name="Fufu_1A")]
+	layers += [tf.keras.layers.Dense(32//2, use_bias=not batch_normalization, name="Fufu_1A")]
 	if batch_normalization:
 		layers += [tf.keras.layers.BatchNormalization()]
 	layers += [tf.keras.layers.Activation("tanh")]
 
 	
 	layers += [tf.keras.layers.Dropout(dropout_rate)]
-	layers += [tf.keras.layers.Dense(16, use_bias=not batch_normalization, name="Fufu_1B")]
+	layers += [tf.keras.layers.Dense(16//2, use_bias=not batch_normalization, name="Fufu_1B")]
 	if batch_normalization:
 		layers += [tf.keras.layers.BatchNormalization()]
 	layers += [tf.keras.layers.Activation("tanh")]

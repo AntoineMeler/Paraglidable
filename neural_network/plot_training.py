@@ -3,7 +3,7 @@ import glob, time
 import numpy as np
 
 patterns = [("b", "tmp_trainings/*/CELLS.log"),
-			("r", "bin/models/CLASSIFICATION_2.0.0/CELLS.log")]
+			("r", "bin/models/REGRESSION_2.0.0/CELLS.log")]
 
 validation_loss_col = 2
 
@@ -24,7 +24,7 @@ while True:
 					print("error with", l)
 	plt.title("%d, %f"%(nb, min_val))
 	plt.ylim(ymin, ymax)
-	plt.hlines([int(ymin*100.)/100.+0.0025*l for l in range(40)], 0, max_length-1, linestyles='dotted', linewidth=1)
+	#plt.hlines([int(ymin*100.)/100.+0.0025*l for l in range(40)], 0, max_length-1, linestyles='dotted', linewidth=1)
 	plt.savefig("plot.png", dpi=170)
 	plt.clf()
 	time.sleep(5)

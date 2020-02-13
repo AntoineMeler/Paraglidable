@@ -44,7 +44,7 @@ class Forecast:
 			self.forced_meteo_files            = None
 		elif Forecast.in_docker():
 			root = "/workspaces/Paraglidable/"
-			self.DEBUG_MODE                    = False
+			self.DEBUG_MODE                    = True
 			self.last_forecast_time_file_dir   = "/tmp/lastForecastTime"
 			self.downloaded_forecasts_dir      = "/tmp/forecasts"
 			self.prediction_filename_for_tiler = "/tmp/predictions.txt"
@@ -56,7 +56,7 @@ class Forecast:
 			self.geo_json_borders              = root+"tiler/data/Europe_africa_med_red.geo.json"
 			self.skipped_tiles                 = root+"tiler/data/skippedTiles.txt"
 			self.min_tiles_zoom                = 5
-			self.max_tiles_zoom                = 8
+			self.max_tiles_zoom                = 7
 			self.render_tiles                  = True
 			self.forced_meteo_files            = None
 		else:
@@ -330,7 +330,7 @@ class Forecast:
 				# Compute spots prediction
 				#======================================================================================
 
-				if True:
+				if False:
 					self.__compute_spots_forecasts(self.models_directory,
 												   self.problem_formulation,
 					                               distinct_latitudes,
@@ -504,8 +504,8 @@ class Forecast:
 
 if __name__ == "__main__":
 
-	problem_formulation = ProblemFormulation.CLASSIFICATION
-	model_dir = "./bin/models/%s_1.0.0" % str(problem_formulation).split(".")[-1]
+	problem_formulation = ProblemFormulation.REGRESSION
+	model_dir = "./bin/models/%s_2.0.0" % str(problem_formulation).split(".")[-1]
 
 	#######################################################################
 	# Check if script is already running

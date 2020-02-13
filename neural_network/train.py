@@ -189,6 +189,8 @@ class Train:
 															     model_content.super_resolution,
 															     self.problem_formulation==ProblemFormulation.REGRESSION)
 
+
+
 			nb_models = 4
 			all_Y = [[] for model in range(nb_models)] # flyability, crossability, wind-flyability, rain-flyability
 
@@ -345,16 +347,19 @@ class Train:
 if __name__ == "__main__":
 
 	nb_cells = 80
-	problem_formulation = ProblemFormulation.CLASSIFICATION
-
-	model_dir = "./bin/models/%s_2.0.0" % str(problem_formulation).split(".")[-1]
+	if False:
+		problem_formulation = ProblemFormulation.CLASSIFICATION
+		model_dir = "./bin/models/%s_1.0.0" % str(problem_formulation).split(".")[-1]
+	else:
+		problem_formulation = ProblemFormulation.REGRESSION
+		model_dir = "./bin/models/%s_2.0.0" % str(problem_formulation).split(".")[-1]
 
 	#==========================================================================================
-	if True: # 1) Train [weather] [cells population]
+	if False: # 1) Train [weather] [cells population]
 	#==========================================================================================
 
-		nb_trainings = 20
-		lr_schedules = (0.008, 7.e-4, 55), (0.0025, 4.e-4, 70)
+		nb_trainings = 1
+		lr_schedules = (0.008, 7.e-4, 120), (0.0025, 1.e-6, 220)
 		cur_model_dir = "tmp_trainings/"
 		train = Train(model_dir, ModelType.CELLS, problem_formulation)
 
@@ -380,8 +385,24 @@ if __name__ == "__main__":
 
 		train.save()
 
+
+
+
+	if True:
+		import tensorflow as tf
+
+		train = Train(model_dir, ModelType.CELLS, problem_formulation)
+		train.set_trained(range(55), super_resolution=1, load_weights=True)
+		train.trained_model.model = tf.keras.models.Model(	inputs  = train.trained_model.model.inputs,
+															outputs = train.trained_model.model.get_layer("population_block").input )
+		
+		flyability, crossability = train.trained_model.model.predict(train.all_X)[0:2]
+		print(flyability.shape)
+		print(np.histogram(flyability[:,0,1], bins=10))
+
+
 	#==========================================================================================
-	if True: # 2) Train [spots population], [wind + alti] by cell
+	if False: # 2) Train [spots population], [wind + alti] by cell
 	#==========================================================================================
 
 		train = Train(model_dir, ModelType.SPOTS, problem_formulation)
@@ -389,7 +410,7 @@ if __name__ == "__main__":
 		for c in range(0, nb_cells):
 			Verbose.print_text(0, "=================================[ cell %d ]=================================" % c)
 			if train.set_trained([c], load_weights=True):
-				train.train((0.008, 5.e-6, 110))
+				train.train((0.008, 5.e-6, 1))
 				train.save()
 			else:
 				print("No spot in cell %d"%c)

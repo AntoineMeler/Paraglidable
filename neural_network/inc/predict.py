@@ -142,7 +142,7 @@ class Predict:
 		for c in range(20):
 			popus += [np.mean(np.load(self.models_directory+"/weights/population_alt_cell_%d.npy"%c))]
 		
-		return  0.6/mean_dow/np.mean(popus) # TODO
+		return  0.25 #0.6/mean_dow/np.mean(popus) # TODO
 
 
 	def set_prediction_population(self):
