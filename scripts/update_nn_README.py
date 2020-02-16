@@ -25,7 +25,7 @@ def github_inner_link(link):
 	link = link.lower()
 
 	# When multiple sections have the same name, we add "-%d" in the link, as does GitHub
-	k = 2
+	k = 1
 	candidate_link = link
 	while candidate_link in g_inner_links:
 		candidate_link = link +"-%d"%k

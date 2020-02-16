@@ -16,13 +16,13 @@
 			* [Indicators](#indicators)
 	* [Population Block](#population-block)
 		* [Date and Day of Week Modifiers](#date-and-day-of-week-modifiers)
-		* [Cells](#cells-2)
-		* [Spots](#spots-2)
+		* [Cells](#cells-1)
+		* [Spots](#spots-1)
 	* [Wind Block](#wind-block)
 		* [Input](#input)
 		* [Model](#model)
-			* [Cells](#cells-3)
-			* [Spots](#spots-3)
+			* [Cells](#cells-2)
+			* [Spots](#spots-2)
 * [Training](#training)
 
 <details><summary>Expand code</summary><p>
@@ -321,7 +321,7 @@ They are visible on the [site](https://paraglidable.com), dropping down below th
 
 They are computed by predicting flyability from wind-related and humidity-related inputs only.
 
-<img src="docs/imgs/nn_wind_humidity_flyability.svg" width="50%" align="center" />
+<p align="center"><img src="docs/imgs/nn_wind_humidity_flyability.svg" width="50%" /></p>
 
 ## Population Block
 
