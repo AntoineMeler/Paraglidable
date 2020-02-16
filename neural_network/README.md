@@ -11,15 +11,18 @@
 	* [Introduction](#introduction)
 	* [Network Architecture](#network-architecture)
 		* [Diagram](#diagram)
+			* [Cells](#cells)
+			* [Spots](#spots)
+			* [Indicators](#indicators)
 	* [Population Block](#population-block)
 		* [Date and Day of Week Modifiers](#date-and-day-of-week-modifiers)
-		* [Cells](#cells)
-		* [Spots](#spots)
+		* [Cells](#cells-2)
+		* [Spots](#spots-2)
 	* [Wind Block](#wind-block)
 		* [Input](#input)
 		* [Model](#model)
-			* [Cells](#cells-2)
-			* [Spots](#spots-2)
+			* [Cells](#cells-3)
+			* [Spots](#spots-3)
 * [Training](#training)
 
 <details><summary>Expand code</summary><p>
@@ -303,22 +306,22 @@ The optimized variables are drawn the same way, but, of course, they do not have
 
 For example, the "wind (8)" tensor is of shape `(nb_samples, nb_cells, nb_altitudes=5, nb_hours=3, feature_dimension=8)`.
 
-| <h3>Cells</h3> | <h3>Spots</h3> |
+| <h4>Cells</h4> | <h4>Spots</h4> |
 | :-: | :-: |
 | <img src="docs/imgs/nn_cells.svg" width="100%"/> | <img src="docs/imgs/nn_spots.svg" width="100%"/> |
 
 
-<h3>Indicators</h3>
+<h4>Indicators</h4>
 
-<img src="docs/imgs/indicators.png" width="20%" align="right" />
+<img src="docs/imgs/indicators.png" width="250" align="right" />
 
 In the **_cells_** model, some interpretation cues on the conditions are jointly computed.
 Currently, two of them are implemented: the <em>wind-flyability</em> and the <em>humidity-flyability</em> indicators.
-They are visible on the [site](https://paraglidable.com) below the main predictions.
+They are visible on the [site](https://paraglidable.com), dropping down below the main predictions.
 
 They are computed by predicting flyability from wind-related and humidity-related inputs only.
 
-<img src="docs/imgs/nn_wind_humidity_flyability.svg" width="50%"/>
+<img src="docs/imgs/nn_wind_humidity_flyability.svg" width="50%" align="center" />
 
 ## Population Block
 

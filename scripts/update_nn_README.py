@@ -1,6 +1,5 @@
 import sys, os, re, shutil, subprocess
 
-
 def code_removed(md_content):
 	return re.sub("(```.*?```)", "", md_content, flags=re.S)
 
@@ -37,15 +36,20 @@ def github_inner_link(link):
 
 	return "#"+link
 
-def generate_toc(md_file):
+def sort_sections_key(s):
+	return s[0]
 
+def generate_toc(md_file):
 	with open(md_file, "r") as fin:
 		mdcontent = fin.read()
-		
-	sections = re.findall(r"^([#]+)[ ]*(.+)$", code_removed(mdcontent), re.MULTILINE)
+	
+	mdcontent_code_removed = code_removed(mdcontent)
+	sections = [(match.span()[0], int(match.group(1)), match.group(2)) for match in re.finditer(r"<h([1-9]{1})>([^<]+)</h[1-9]{1}>", mdcontent_code_removed)] +\
+			   [(match.span()[0], len(match.group(1)), match.group(2)) for match in re.finditer(r"^([#]+)[ ]*(.+)$", mdcontent_code_removed, re.MULTILINE)]
+	
 	toc = ""
-	for section_level, section_title in sections:
-		toc += "*".rjust(len(section_level), "\t") +(" [%s](%s)"%(section_title, github_inner_link(section_title))) +"\n"
+	for _, section_level, section_title in sorted(sections, key=sort_sections_key):
+		toc += "*".rjust(section_level, "\t") +(" [%s](%s)"%(section_title, github_inner_link(section_title))) +"\n"
 	mdcontent = "# Table of contents\n\n"+ toc +"\n"+ mdcontent
 
 	with open(md_file, "w") as fout:
