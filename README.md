@@ -24,12 +24,10 @@ The main dependencies are:
 
 ```bash
 git clone https://github.com/AntoineMeler/Paraglidable.git
-```
-<pre>
-docker build Paraglidable/docker/
-docker run -it -p 8001:80 -p 8888:8888 -v $(pwd)/Paraglidable:/workspaces/Paraglidable <b><i>IMAGE</i></b>
-</pre>
-```bash
+
+docker build -t paraglidable Paraglidable/docker/
+docker run -it -p 8001:80 -p 8888:8888 -v $(pwd)/Paraglidable:/workspaces/Paraglidable paraglidable
+
 cd /workspaces/Paraglidable/scripts/
 python download_data.py             # Download training weather and flights data (200MB)
 python download_elevation_tiles.py  # Download elevation data (260MB)

@@ -13,6 +13,11 @@
 \definecolor{varcolor}      {rgb}{1.0, 1.0, 1.0}
 \definecolor{blocvarcolor}  {rgb}{0.0, 0.0, 0.0}
 
+\definecolor{windflyability}    {rgb}{0.6, 0.4, 0.75}
+\definecolor{windflyabilitypopu}{rgb}{0.7, 0.3, 0.75}
+
+\definecolor{humidityflyability}    {rgb}{0.2, 0.5, 0.0}
+\definecolor{humidityflyabilitypopu}{rgb}{0.4, 0.5, 0.0}
 
 \newcommand{\tensorlabel}[1]{
 	\scalebox{1.5}{\textbf{#1}}
@@ -149,7 +154,12 @@
 	\node at (3.0,  2.5+0.35, -1.75) {\tensorlabel{\textcolor{windcolor}{wind (8)}}};
 	\tensorallalts{fill=windcolor}{fill=windcolor!75!black, thick}{10}{3}{5}
 }
-
+\newcommand{\inputhumidity}{
+	\node at (2.5,  2.5+0.35, -1.75) {\tensorlabel{\textcolor{humidity}{humidity (2)}}};
+	\begin{scope}[yshift=0.75cm]
+		\tensor{fill=humidity}{fill=humidity!75!black, thick}{10}{3}{1}
+	\end{scope}
+}
 \newcommand{\inputhumidityother}{
 	\node at (2.5,  2.5+0.35, -1.75) {\tensorlabel{\textcolor{humidity}{humidity (2)}}};
 	\node at (3.7,  -0.15, -1.75) {\tensorlabel{\textcolor{other}{other (45)}}};

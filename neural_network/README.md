@@ -130,7 +130,7 @@ axes[1,0].set_title("nb flights per days, by year")
 axes[1,0].bar(years, [counter_flights_by_year[y]/counter_days[y] for y in years])
 axes[1,1].set_title("nb flights per days, by month")
 axes[1,1].bar(months, [counter_flights_by_month[m]/counter_months[m] for m in months])
-axes[1,1].set_title("nb flights by day of week")
+axes[2,0].set_title("nb flights by day of week")
 axes[2,0].bar(dow, [counter_flights_by_dow[d] for d in dow])
 print("Nb flights by day of week:", [counter_flights_by_dow[d] for d in dow])
 
@@ -289,8 +289,8 @@ The gap between reported flights and _flyability_ is explained by what we call t
 Defined in [model.py](docs/../inc/model.py)
 
 There are two different models:
-* The **_cells_** model: takes the weather data for a cell, and gives prediction for the whole cell
-* The **_spots_** model: takes the weather data for a cell and gives different predictions for each take-off spot of the cell, taking into account their learned specificities regarding the wind
+* The **_cells_** model: takes the weather data for a cell, and gives prediction for the whole cell. This prediction determines the map color.
+* The **_spots_** model: takes the weather data for a cell and gives different predictions for each take-off spot of the cell, taking into account their learned specificities regarding the wind.
 
 The networks are a combination of handcrafted models with internal variables (Wind Block, Population Block) and neural networks (Flyability Block, Crossability Block), all optimized together.
 
@@ -307,6 +307,18 @@ For example, the "wind (8)" tensor is of shape `(nb_samples, nb_cells, nb_altitu
 | :-: | :-: |
 | <img src="docs/imgs/nn_cells.svg" width="100%"/> | <img src="docs/imgs/nn_spots.svg" width="100%"/> |
 
+
+<h3>Indicators</h3>
+
+<img src="docs/imgs/indicators.png" width="20%" align="right" />
+
+In the **_cells_** model, some interpretation cues on the conditions are jointly computed.
+Currently, two of them are implemented: the <em>wind-flyability</em> and the <em>humidity-flyability</em> indicators.
+They are visible on the [site](https://paraglidable.com) below the main predictions.
+
+They are computed by predicting flyability from wind-related and humidity-related inputs only.
+
+<img src="docs/imgs/nn_wind_humidity_flyability.svg" width="50%"/>
 
 ## Population Block
 
@@ -351,7 +363,7 @@ logging.getLogger().disabled = False
 </p></details>
 
 
-![png](docs/README_files/README_12_0.png)
+![png](docs/README_files/README_13_0.png)
 
 
 ### Date and Day of Week Modifiers
@@ -397,7 +409,7 @@ plt.show()
 </p></details>
 
 
-![png](docs/README_files/README_16_0.png)
+![png](docs/README_files/README_17_0.png)
 
 
 ### Spots
@@ -416,7 +428,7 @@ plt.show()
 </p></details>
 
 
-![png](docs/README_files/README_18_0.png)
+![png](docs/README_files/README_19_0.png)
 
 
 ## Wind Block
@@ -481,7 +493,7 @@ fig.tight_layout()
 </p></details>
 
 
-![png](docs/README_files/README_23_0.png)
+![png](docs/README_files/README_24_0.png)
 
 
 # Training
