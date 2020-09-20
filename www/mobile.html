@@ -129,14 +129,28 @@ function getGpsPosition(position) {
     setPositionMobile(position.coords.latitude, position.coords.longitude, -1);
 }
 
-var strView = getCookie("view");
-if (strView != "") {
-    arView     = strView.split(",");
-    viewCenter = [parseFloat(arView[0]), parseFloat(arView[1])];
-    zoom       = parseInt(arView[2]);
-    setPositionMobile(viewCenter[0], viewCenter[1], zoom);
-} else {
-    detectLocation();
+
+var inputLat  = getQueryVariable("lat");
+var inputLon  = getQueryVariable("lon");
+var inputZoom = getQueryVariable("zoom");
+
+if (!inputLat || !inputLon || !inputZoom)
+{
+    var strView = getCookie("view");
+    if (strView != "") {
+        arView     = strView.split(",");
+        viewCenter = [parseFloat(arView[0]), parseFloat(arView[1])];
+        zoom       = parseInt(arView[2]);
+        setPositionMobile(viewCenter[0], viewCenter[1], zoom);
+    } else {
+        detectLocation();
+    }
+}
+else
+{
+    viewCenter = [parseFloat(inputLat), parseFloat(inputLon)];
+    viewZoom   = parseInt(inputZoom);
+    setPositionMobile(viewCenter[0], viewCenter[1], viewZoom);
 }
 
 //
