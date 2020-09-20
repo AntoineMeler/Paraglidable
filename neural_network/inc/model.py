@@ -66,9 +66,9 @@ def get_wind_flyability_block(nb_altitudes, model_content, name):
 	return tf.keras.models.Model(layers[0], result, name=name)
 
 
-def get_flyability_block(other_dim, humidity_dim, name, disable_dropout=False):
+def get_flyability_block(other_dim, humidity_dim, name):
 	batch_normalization = True
-	dropout_rate = 0.0 if not disable_dropout else 0.
+	dropout_rate = 0.0
 
 	layers  = [[tf.keras.layers.Input((3,),                name = "in_flyability_wind"),
 	            tf.keras.layers.Input((3 * other_dim,),    name = "in_flyability_other"),
@@ -534,7 +534,7 @@ class ModelSpots:
 		# Blocks
 		# ==============================================================================================================
 
-		flyabilityModel = get_flyability_block(other_dim, humidity_dim, name="flyability_block", disable_dropout=True)
+		flyabilityModel = get_flyability_block(other_dim, humidity_dim, name="flyability_block")
 		flyabilityModel.trainable = False # freeze the block
 
 		# ==============================================================================================================
