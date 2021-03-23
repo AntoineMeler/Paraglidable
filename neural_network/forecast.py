@@ -131,7 +131,7 @@ class Forecast:
 	@staticmethod
 	def download_forecast(forecastTime, grid, h, forecastHour, path):
 		forecastTime = forecastTime[0:4+2+2] +"%2F"+ forecastTime[-2:]
-		url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_"+ grid +".pl?file=gfs.t"+ ("%02d"%forecastHour) +"z.pgrb2."+ grid +".f"+ ("%03d"%h) +"&"+ GfsData().g_grib_url_levels +"&"+ GfsData().g_grib_url_meteovars +"&leftlon=0&rightlon=360&toplat=90&bottomlat=-90&dir=%2Fgfs."+ forecastTime
+		url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_"+ grid +".pl?file=gfs.t"+ ("%02d"%forecastHour) +"z.pgrb2."+ grid +".f"+ ("%03d"%h) +"&"+ GfsData().g_grib_url_levels +"&"+ GfsData().g_grib_url_meteovars +"&leftlon=0&rightlon=360&toplat=90&bottomlat=-90&dir=%2Fgfs."+ forecastTime +"%2Fatmos"
 		Verbose.print_text(1, url)
 		Forecast.__download(url, path)
 
