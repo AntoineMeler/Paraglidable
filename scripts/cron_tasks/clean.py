@@ -34,7 +34,7 @@ if __name__ == "__main__":
 			remove_file(meteoFile)
 
 	# far past days, to be removed
-	for delta_days in range(nb_days+1, 100):
+	for delta_days in range(nb_days+1-4, 100):
 		strday = (datetime.datetime.now() + datetime.timedelta(days = -delta_days)).strftime("%Y-%m-%d")
 		remove_dir(os.path.join(tiles_dir, strday))
 
