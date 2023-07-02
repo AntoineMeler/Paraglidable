@@ -90,7 +90,7 @@
     <div class="dropdown-content">
         <ul>
             <li id="mobileVersionLink" onclick="window.location.href='mobile.html'">Mobile version</li>
-            <li id="androidAppLink" onclick="window.open('https://play.google.com/store/app/details?id=com.paraglidable.paraglidable','_blank')">Android app</li>
+            <li id="androidAppLink" onclick="window.open('https://play.google.com/store/apps/details?id=com.paraglidable.paraglidable','_blank')">Android app</li>
         </ul>
     </div>
 </div>
@@ -124,6 +124,10 @@
             <li id="shareFacebookLink" onclick="">Share on Facebook</li>
         </ul>
     </div>
+</div>
+
+<div class="dropdown">
+    <div class="menuButton" id="menuButtonDonate" title="donate" onclick="switchVisibility('newPopupDonate')"></div>
 </div>
 
 <div>
@@ -1788,7 +1792,38 @@ function mapGps()
         </div>
     </div>
 
+    <div id="newPopupDonate" class="newModal">
+        <div class="newModalContainer">
+            <div class="newModalTitle">
+                <div class="newModalTileText">Donate</div>
+                <div class="newModalTileCross" onclick="$(this).closest('.newModal').css('display','none');"></div>
+            </div>
+            <div class="newModalContent">
+                <p>
+                    Hi,<br>
+                    My name is Antoine, I live in France and I have been creating and hosting Paraglidable since 2018.<br>
+                    I tried my best to squeeze Paraglidable into a small server but the computing needs an sharing the data with other applications for free are starting to take a toll 😅.<br>
+                    On top of that, I have another similar project in the works, but I don't have enough disk space to release it.<br>
+                    So I finally decided to let you contribute to the costs if you're willing to help.<br>
 
+                    <br><br>
+                    <table width="80%" style="margin-left: auto; margin-right: auto;">
+                        <tr>
+                            <td style="text-align: center; vertical-align: middle;">
+                                <a href="https://paypal.me/paraglidable" target="_blank"><img src="imgs/icons/PayPal.svg" width="100px"></a>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle;">
+                                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="paraglidable" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><br><br>
+
+                    <span style="display: table; margin: 0 auto; font-weight: bold; font-size:larger">Thank you!</span></b>
+                </p>
+            </div>
+        </div>
+    </div>
 
     <div id="newPopupLinks" class="newModal">
         <div class="newModalContainer">

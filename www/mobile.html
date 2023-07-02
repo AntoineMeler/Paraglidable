@@ -67,14 +67,15 @@
         </div>
         <div style="flex: 0 0 32px">
             <div class="dropdown" id="dropdown">
-                <div class="menuButton" id="menuButtonMenu" title="Menu" onclick="$('#dropdown').toggleClass('active');$('#dropdown2').removeClass('active');"></div>
+                <div class="menuButton" id="menuButtonMenu" title="Menu" onclick="$('.mobileModal').css('display', 'none');$('#dropdown').toggleClass('active');$('#dropdown2').removeClass('active');"></div>
                 <div class="dropdown-content" id="dropdown-content">
                     <ul>
                         <li id="desktopLink" onclick="window.location.href='/'">Desktop version</li>
-                        <li id="androidAppLink" onclick="window.location.href='https://play.google.com/store/app/details?id=com.paraglidable.paraglidable'">Android app</li>
+                        <li id="androidAppLink" onclick="window.location.href='https://play.google.com/store/apps/details?id=com.paraglidable.paraglidable'">Android app</li>
                         <li id="facebookLink" onclick="window.location.href='https://m.facebook.com/paraglidable'">Facebook page</li>
                         <li id="colorBlindLink" onclick="switchColorBlind()">Color blind mode: <span id="colorBlindModeStrValLink" style="font-weight:bold;"></span></li>
-                        <li id="legendLink" onclick="$('#legendModal').css('display', 'block');$('#dropdown').removeClass('active');$('#dropdown2').removeClass('active');">Legend</li>
+                        <li id="legendLink" onclick="$('.mobileModal').css('display', 'none');$('#legendModal').css('display', 'block');$('#dropdown').removeClass('active');$('#dropdown2').removeClass('active');">Legend</li>
+                        <li id="donateLink" onclick="$('.mobileModal').css('display', 'none');$('#donateModal').css('display', 'block');$('#dropdown').removeClass('active');$('#dropdown2').removeClass('active');">Donate</li>
                     </ul>
                 </div>
             </div>
@@ -179,8 +180,6 @@ dayClick(moment().format("YYYY-MM-DD"));
                 <div class="mobileModalTileCross" onclick="$(this).closest('.mobileModal').css('display','none');"></div>
             </div>
             <div class="mobileModalContent">
-
-
                 <div style="height:5px"></div>
                 <div class="legendSection" id="legendSectionPredictions">
                     <div class="legendLine">
@@ -202,8 +201,42 @@ dayClick(moment().format("YYYY-MM-DD"));
                         </div>
                     </div>
                 </div>
+            </div>
+    </div>
+</div>
 
 
+
+
+<div class="mobileModal" id="donateModal">
+    <div class="mobileModalContainer">
+            <div class="mobileModalTitle" id="donateModalTitle">
+                <div class="mobileModalTileText">Donate</div>
+                <div class="mobileModalTileCross" onclick="$(this).closest('.mobileModal').css('display','none');"></div>
+            </div>
+            <div class="mobileModalContent">
+                <p>
+                    Hi,
+                    My name is Antoine, I live in France and I have been creating and hosting Paraglidable since 2018.<br>
+                    I tried my best to squeeze Paraglidable into a small server but the computing needs an sharing the data with other applications for free are starting to take a toll 😅.<br>
+                    On top of that, I have another similar project in the works, but I don't have enough disk space to release it.<br>
+                    So I finally decided to let you contribute to the costs if you're willing to help.<br>
+
+                    <br>
+
+                    <table width="80%" style="margin-left: auto; margin-right: auto;">
+                        <tr>
+                            <td style="text-align: center; vertical-align: middle;">
+                                <a href="https://paypal.me/paraglidable" target="_blank"><img src="imgs/icons/PayPal.svg" width="100px"></a>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle;">
+                                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="paraglidable" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br><b>Thank you!</b>
+                </p>
             </div>
     </div>
 </div>
