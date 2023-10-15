@@ -821,7 +821,7 @@ function createBaseTilesLayers(className)
                     className: className
                   };
 
-    var Stamen_Terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', options);
+    var Stamen_Terrain = L.tileLayer('https://tile.osm.ch/switzerland/{z}/{x}/{y}.png', options);
 
     return Stamen_Terrain;
 }
@@ -2115,6 +2115,7 @@ function mapGps()
 
                     <h2>Map tiles</h2>
                     <ul>
+                        <li><a target="_blank" href="https://www.osm.ch/">OpenStreetMap Switzerland</a></li>
                         <li>Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>, under <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_blank" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_blank" href="http://www.openstreetmap.org/copyright">ODbL</a>.</li>
                     </ul>
 

@@ -38,7 +38,7 @@ map.on('popupclose', function(e) {
 });
 
 var paraglidableTiles = null;
-var Stamen_Terrain    = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+var Stamen_Terrain    = L.tileLayer('https://tile.osm.ch/switzerland/{z}/{x}/{y}.png', {
     attribution: '',
     subdomains: 'abcd',
     minZoom: 0,
